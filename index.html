@@ -6,17 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Калькулятор рассрочки</title>
 
+    <!-- Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --green: #0f7a44;
             --green-dark: #0b5f35;
+            --yellow: #f1c40f;
             --white: #fff;
             --glass: rgba(255, 255, 255, .12);
         }
 
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat', Arial, sans-serif;
             background: linear-gradient(180deg, var(--green), var(--green-dark));
             color: var(--white);
         }
@@ -40,10 +46,10 @@
             display: block;
             margin-top: 16px;
             font-size: 14px;
+            font-weight: 500;
         }
 
-        input[type=text],
-        input[type=number] {
+        input[type=text] {
             width: 100%;
             padding: 14px;
             margin-top: 6px;
@@ -54,11 +60,7 @@
             font-size: 16px;
         }
 
-        input[type=range] {
-            width: 100%;
-            margin-top: 10px;
-        }
-
+        /* ===== CATEGORY ===== */
         .category {
             display: flex;
             gap: 10px;
@@ -70,13 +72,47 @@
             padding: 12px;
             border-radius: 14px;
             border: 2px solid rgba(255, 255, 255, .35);
-            text-align: center;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .cat img {
+            width: 18px;
+            height: 18px;
         }
 
         .cat.active {
             background: rgba(255, 255, 255, .18);
             border-color: #fff;
+        }
+
+        /* ===== RANGE ===== */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            margin-top: 14px;
+            border-radius: 4px;
+            background: linear-gradient(to right,
+                    var(--yellow) 0%,
+                    var(--yellow) var(--fill, 0%),
+                    rgba(255, 255, 255, .35) var(--fill, 0%),
+                    rgba(255, 255, 255, .35) 100%);
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--yellow);
+            margin-top: -6px;
+            cursor: pointer;
         }
 
         .value {
@@ -85,6 +121,7 @@
             opacity: .85;
         }
 
+        /* ===== RESULT ===== */
         .result {
             margin-top: 20px;
             background: var(--glass);
@@ -95,6 +132,7 @@
         .result div {
             margin-bottom: 8px;
             font-size: 15px;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -107,20 +145,24 @@
         </div>
 
         <label>Стоимость товара</label>
-        <input type="text" id="price" value="40 000">
+        <input type="text" id="price" value="40 000 ₽">
 
         <label>Категория товара</label>
         <div class="category">
-            <div class="cat active" data-cat="1">Телефоны</div>
-            <div class="cat" data-cat="2">Все товары</div>
+            <div class="cat active" data-cat="1">
+                <img src="icon-phone.png"> Телефоны
+            </div>
+            <div class="cat" data-cat="2">
+                <img src="icon-box.png"> Все товары
+            </div>
         </div>
 
         <label>Количество платежей</label>
         <input type="range" id="term" min="4" max="12" value="6">
         <div class="value" id="termLabel">6 платежей</div>
 
-        <label>Первоначальный взнос (₽)</label>
-        <input type="text" id="down" value="0">
+        <label>Первоначальный взнос</label>
+        <input type="text" id="down" value="0 ₽">
 
         <div class="result">
             <div id="monthly"></div>
@@ -137,45 +179,63 @@
         const allRest = { 4: .186, 5: .2353, 6: .2857, 7: .3373, 8: .3769, 9: .4308, 10: .472, 11: .4944, 12: .5283 };
 
         let category = 1;
+        let lastTerm = 6;
 
-        // ===== FORMAT =====
-        function onlyDigits(v) {
-            return v.replace(/\D/g, '');
+        // ===== HELPERS =====
+        function digits(v) { return v.replace(/\D/g, ''); }
+        function bank(v) {
+            const rounded = Math.ceil(v / 100) * 100;
+            return rounded
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+                + ' ₽';
         }
 
-        function formatMoney(v) {
-            return Math.ceil(v / 100) * 100
-                .toLocaleString('ru-RU') + ' ₽';
-        }
 
-        function formatInput(el) {
-            let v = onlyDigits(el.value);
-            if (!v) v = '0';
-            el.value = Number(v).toLocaleString('ru-RU');
-        }
-
+        // ===== MONEY INPUT =====
         function bindMoneyInput(el) {
+            let original = '';
+            let editing = false;
+
             el.addEventListener('focus', () => {
+                original = el.value;
+                editing = false;
                 el.value = '';
             });
 
+            el.addEventListener('keydown', e => {
+                if (e.key === 'Escape') {
+                    el.value = original;
+                    el.blur();
+                    e.preventDefault();
+                }
+                if (e.key === 'Enter') {
+                    el.blur();
+                    e.preventDefault();
+                }
+            });
+
             el.addEventListener('input', () => {
-                el.value = onlyDigits(el.value);
+                editing = true;
+                el.value = digits(el.value);
             });
 
             el.addEventListener('blur', () => {
-                formatInput(el);
-                calc();
+                if (!editing || el.value === '') {
+                    el.value = original;
+                } else {
+                    el.value = Number(el.value).toLocaleString('ru-RU') + ' ₽';
+                    calc();
+                }
+                editing = false;
             });
         }
 
         // ===== CALC =====
         function calc() {
-            const price = Number(onlyDigits(priceInput.value)) + 1000;
-            const down = Number(onlyDigits(downInput.value));
-            const term = Number(termInput.value);
-
-            termLabel.innerText = term + ' платежей';
+            const price = Number(digits(priceInput.value)) + 1000;
+            const down = Number(digits(downInput.value));
+            const term = lastTerm;
 
             const p = category === 1 ? phonePrice : allPrice;
             const r = category === 1 ? phoneRest : allRest;
@@ -183,18 +243,16 @@
             const min = (price * p[term]) / term;
             const rest = price - down;
 
-            const markup = (down >= min && down > 0)
-                ? price * p[term]
-                : rest * r[term];
-
+            const markup = (down >= min && down > 0) ? price * p[term] : rest * r[term];
             const total = price + markup;
             const monthly = (total - down) / term;
 
             monthlyDiv.innerHTML =
-                'Ежемесячный платёж: <b>' + formatMoney(monthly) + '</b>';
+                'Ежемесячный платёж: <b>' + bank(monthly) + '</b>';
 
             totalDiv.innerHTML =
-                'Общая сумма: <b>' + formatMoney(total) + '</b>';
+                'Общая сумма: <b>' + bank(total) + '</b>';
+
         }
 
         // ===== DOM =====
@@ -208,18 +266,34 @@
         bindMoneyInput(priceInput);
         bindMoneyInput(downInput);
 
+        // категории
         document.querySelectorAll('.cat').forEach(c => {
             c.onclick = () => {
-                document.querySelectorAll('.cat')
-                    .forEach(x => x.classList.remove('active'));
+                document.querySelectorAll('.cat').forEach(x => x.classList.remove('active'));
                 c.classList.add('active');
                 category = Number(c.dataset.cat);
                 calc();
             };
         });
 
-        termInput.addEventListener('input', calc);
+        // LIVE ползунок
+        function updateFill() {
+            const percent = (termInput.value - termInput.min) / (termInput.max - termInput.min) * 100;
+            termInput.style.setProperty('--fill', percent + '%');
+            termLabel.innerText = Math.round(termInput.value) + ' платежей';
+        }
 
+        termInput.addEventListener('input', updateFill);
+
+        termInput.addEventListener('change', () => {
+            lastTerm = Math.round(termInput.value);
+            termInput.value = lastTerm;
+            termLabel.innerText = lastTerm + ' платежей';
+            updateFill();
+            calc();
+        });
+
+        updateFill();
         calc();
     </script>
 </body>
