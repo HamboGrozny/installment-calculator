@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор рассрочки</title>
+
+    <style>
+        :root {
+            --green: #0f7a44;
+            --green-dark: #0b5f35;
+            --white: #fff;
+            --glass: rgba(255, 255, 255, .12);
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, var(--green), var(--green-dark));
+            color: var(--white);
+        }
+
+        .container {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .header img {
+            width: 180px;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        input[type=number],
+        input[type=text] {
+            width: 100%;
+            padding: 14px;
+            margin-top: 6px;
+            border-radius: 14px;
+            border: 2px solid rgba(255, 255, 255, .35);
+            background: transparent;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        input[type=range] {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .category {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .cat {
+            flex: 1;
+            padding: 12px;
+            border-radius: 14px;
+            border: 2px solid rgba(255, 255, 255, .35);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .cat.active {
+            background: rgba(255, 255, 255, .18);
+            border-color: #fff;
+        }
+
+        .value {
+            margin-top: 6px;
+            font-size: 13px;
+            opacity: .85;
+        }
+
+        .result {
+            margin-top: 20px;
+            background: var(--glass);
+            padding: 16px;
+            border-radius: 18px;
+        }
+
+        .result div {
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <img src="logo.png">
+        </div>
+
+        <label>Стоимость товара</label>
+        <input type="number" id="price" value="40000" min="25000" max="80000">
+
+        <label>Категория товара</label>
+        <div class="category">
+            <div class="cat active" data-cat="1">Телефоны</div>
+            <div class="cat" data-cat="2">Все товары</div>
+        </div>
+
+        <label>Количество платежей</label>
+        <input type="range" id="term" min="4" max="12" value="6">
+        <div class="value" id="termLabel">6 платежей</div>
+
+        <label>Первоначальный взнос (₽)</label>
+        <input type="number" id="down" value="0">
+
+        <div class="result">
+            <div id="monthly"></div>
+            <div id="total"></div>
+        </div>
+
+    </div>
+
+    <script>
+        const phonePrice = { 4: .1667, 5: .2083, 6: .25, 7: .2917, 8: .3333, 9: .375, 10: .4167, 11: .4583, 12: .5 };
+        const phoneRest = { 4: .234, 5: .2747, 6: .3158, 7: .357, 8: .4, 9: .4426, 10: .4855, 11: .5285, 12: .5714 };
+        const allPrice = { 4: .1333, 5: .1667, 6: .2, 7: .2333, 8: .2583, 9: .2917, 10: .3167, 11: .33, 12: .35 };
+        const allRest = { 4: .186, 5: .2353, 6: .2857, 7: .3373, 8: .3769, 9: .4308, 10: .472, 11: .4944, 12: .5283 };
+
+        let category = 1;
+
+        function fmt(v) {
+            return Math.ceil(v / 100) * 100
+                .toLocaleString('ru-RU') + ' ₽';
+        }
+
+        function calc() {
+            const price = Number(priceInput.value) + 1000;
+            const down = Number(downInput.value);
+            const term = Number(termInput.value);
+
+            termLabel.innerText = term + ' платежей';
+
+            const p = category === 1 ? phonePrice : allPrice;
+            const r = category === 1 ? phoneRest : allRest;
+
+            const min = (price * p[term]) / term;
+            const rest = price - down;
+
+            const markup = (down >= min && down > 0) ? price * p[term] : rest * r[term];
+            const total = price + markup;
+            const monthly = (total - down) / term;
+
+            monthlyDiv.innerHTML = 'Ежемесячный платёж: <b>' + fmt(monthly) + '</b>';
+            totalDiv.innerHTML = 'Общая сумма: <b>' + fmt(total) + '</b>';
+        }
+
+        const priceInput = document.getElementById('price');
+        const downInput = document.getElementById('down');
+        const termInput = document.getElementById('term');
+        const termLabel = document.getElementById('termLabel');
+        const monthlyDiv = document.getElementById('monthly');
+        const totalDiv = document.getElementById('total');
+
+        document.querySelectorAll('.cat').forEach(c => {
+            c.onclick = () => {
+                document.querySelectorAll('.cat').forEach(x => x.classList.remove('active'));
+                c.classList.add('active');
+                category = Number(c.dataset.cat);
+                calc();
+            };
+        });
+
+        document.querySelectorAll('input').forEach(i => i.addEventListener('input', calc));
+        calc();
+    </script>
+</body>
+
+</html>
