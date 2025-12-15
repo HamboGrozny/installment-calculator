@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор рассрочки</title>
+
+    <style>
+        :root {
+            --green-1: #0a5a33;
+            --green-2: #0c6b3c;
+            --green-3: #0e7843;
+            --white: #fff;
+            --glass: rgba(255, 255, 255, .12);
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, var(--green-3), var(--green-1));
+            color: var(--white);
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            padding: 16px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .header img {
+            width: 180px;
+            height: auto;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            font-size: 14px;
+            opacity: .9;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            margin-top: 6px;
+            border-radius: 14px;
+            border: 2px solid rgba(255, 255, 255, .35);
+            background: transparent;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        input[type=range] {
+            padding: 0;
+        }
+
+        .category-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .cat-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 14px;
+            border: 2px solid rgba(255, 255, 255, .35);
+            background: transparent;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cat-btn img {
+            width: 20px
+        }
+
+        .cat-btn.active {
+            background: rgba(255, 255, 255, .18);
+            border-color: #fff;
+        }
+
+        .range-label {
+            margin-top: 6px;
+            font-size: 13px;
+            opacity: .85;
+        }
+
+        .result {
+            margin-top: 20px;
+            background: var(--glass);
+            padding: 16px;
+            border-radius: 18px;
+        }
+
+        .result div {
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .button {
+            margin-top: 22px;
+            width: 100%;
+            padding: 15px;
+            border-radius: 18px;
+            border: 2px solid #fff;
+            background: transparent;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="container">
+
+            <div class="header">
+                <img src="logo.png" alt="Логотип">
+            </div>
+
+            <label>Стоимость товара</label>
+            <input type="text" id="price" value="40 000">
+
+            <label>Категория товара</label>
+            <div class="category-buttons">
+                <div class="cat-btn active" data-cat="1">
+                    <img src="icon-phone.png"> Телефоны
+                </div>
+                <div class="cat-btn" data-cat="2">
+                    <img src="icon-box.png"> Все товары
+                </div>
+            </div>
+
+            <label>Количество платежей</label>
+            <input type="range" id="term" min="4" max="12" value="6">
+            <div class="range-label" id="termLabel">6 платежей</div>
+
+            <label>Первоначальный взнос (₽)</label>
+            <input
