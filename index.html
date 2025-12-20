@@ -348,6 +348,39 @@
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
+        /* iOS-like visual haptic */
+        .haptic {
+            animation: hapticTap .16s ease-out;
+        }
+
+        @keyframes hapticTap {
+            0% {
+                transform: scale(1);
+            }
+
+            40% {
+                transform: scale(.96);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .haptic-outline {
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, .45);
+            animation: hapticOutline .22s ease-out;
+        }
+
+        @keyframes hapticOutline {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, .45);
+            }
+
+            100% {
+                box-shadow: 0 0 0 12px rgba(255, 255, 255, 0);
+            }
+        }
     </style>
 </head>
 
@@ -798,5 +831,6 @@
         </script>
 
 </body>
+
 
 </html>
