@@ -886,13 +886,16 @@
 
                         clearTimeout(tooltipTimer);
                         tooltipTimer = setTimeout(() => {
-                            waTooltip.classList.remove('show');
-                            setWaTextDefault();
-                            waTouched = false;
-                        }, 2500);
+    // скрываем подсказку
+    waTooltip.classList.remove('show');
 
-                        return;
-                    }
+    // возвращаем текст кнопки
+    setWaTextDefault();
+
+    // сбрасываем флаг первого тапа
+    waTouched = false;
+}, 2500);
+
 
 
                     // ПК или второй тап — переход в WhatsApp
@@ -907,5 +910,6 @@
         </script>
 
 </body>
+
 
 </html>
