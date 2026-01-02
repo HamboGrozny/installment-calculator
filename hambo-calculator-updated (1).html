@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HamBo — Калькулятор рассрочки</title>
+    <link rel="icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #40BF95;
+            --primary-light: #5DD4AD;
+            --primary-dark: #0D7359;
+            --primary-darker: #024034;
+            --secondary: #F2C84B;
+            --accent: #F28C8C;
+            --bg-gradient-start: #F8FFFE;
+            --bg-gradient-end: #E8F6F3;
+            --surface: #ffffff;
+            --surface-elevated: #ffffff;
+            --surface-hover: #F0FAF7;
+            --text-primary: #1A1F1E;
+            --text-secondary: #3D4846;
+            --text-muted: #6B7573;
+            --border: #E0E8E6;
+            --border-focus: #40BF95;
+            --shadow-sm: 0 1px 3px rgba(13, 115, 89, 0.06);
+            --shadow-md: 0 4px 16px rgba(13, 115, 89, 0.08);
+            --shadow-lg: 0 16px 48px rgba(13, 115, 89, 0.12);
+            --shadow-glow: 0 0 0 0 rgba(64, 191, 149, 0);
+            --radius-sm: 10px;
+            --radius-md: 14px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+        }
+
+        [data-theme="dark"] {
+            --bg-gradient-start: #0B1612;
+            --bg-gradient-end: #162420;
+            --surface: #1A2825;
+            --surface-elevated: #253430;
+            --surface-hover: #2D3E3A;
+            --text-primary: #F0F5F3;
+            --text-secondary: #D4E0DD;
+            --text-muted: #8A9894;
+            --border: #2D4039;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(160deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 16px;
+            line-height: 1.5;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Decorative background elements */
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::before {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            top: -150px;
+            right: -150px;
+        }
+
+        body::after {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.9);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle .sun-icon {
+            display: none;
+        }
+
+        .theme-toggle .moon-icon {
+            display: block;
+        }
+
+        [data-theme="dark"] .theme-toggle .sun-icon {
+            display: block;
+        }
+
+        [data-theme="dark"] .theme-toggle .moon-icon {
+            display: none;
+        }
+
+        /* Sound Toggle */
+        .sound-toggle {
+            position: fixed;
+            top: 16px;
+            right: 68px;
+            width: 44px;
+            height: 44px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .sound-toggle:active {
+            transform: scale(0.9);
+        }
+
+        .sound-toggle svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .sound-toggle .sound-on-icon {
+            display: block;
+        }
+
+        .sound-toggle .sound-off-icon {
+            display: none;
+        }
+
+        .sound-toggle.muted .sound-on-icon {
+            display: none;
+        }
+
+        .sound-toggle.muted .sound-off-icon {
+            display: block;
+        }
+
+        .sound-toggle.muted {
+            opacity: 0.5;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            animation: fadeInDown 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header img {
+            width: 120px;
+            filter: drop-shadow(0 4px 16px rgba(64, 191, 149, 0.15));
+        }
+
+        [data-theme="dark"] .header img {
+            content: url('logo-dark.png');
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-top: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        [data-theme="dark"] .header h1 {
+            color: var(--primary-light);
+        }
+
+        /* Card */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            animation-delay: 0.1s;
+            animation-fill-mode: both;
+            backdrop-filter: blur(20px);
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        /* Input Styling */
+        .input-wrapper {
+            position: relative;
+        }
+
+        input[type=text] {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--border);
+            background: var(--surface);
+            color: var(--text-primary);
+            font-size: 20px;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+
+        input[type=text]:focus {
+            border-color: var(--primary);
+            background: var(--surface-hover);
+            box-shadow: 0 0 0 3px rgba(64, 191, 149, 0.1);
+        }
+
+        /* Category Carousel */
+        .category-carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-md);
+            margin-top: 8px;
+        }
+
+        .category-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            touch-action: pan-y;
+            will-change: transform;
+        }
+
+        .category-slide {
+            min-width: 100%;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            transform: scale(0.95);
+            opacity: 0.6;
+        }
+
+        .category-slide.active {
+            transform: scale(1);
+            opacity: 1;
+            border-color: var(--primary);
+            box-shadow: 0 4px 16px rgba(64, 191, 149, 0.25);
+        }
+
+        .category-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .category-slide.active::before {
+            opacity: 1;
+        }
+
+        .category-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .category-slide img {
+            width: 48px;
+            height: 48px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            filter: grayscale(0.5) brightness(0.8);
+            transform: scale(0.9);
+        }
+
+        .category-slide.active img {
+            filter: brightness(1.2) grayscale(0);
+            transform: scale(1);
+        }
+
+        .category-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            letter-spacing: -0.3px;
+            text-align: center;
+            opacity: 0.5;
+        }
+
+        .category-slide.active .category-label {
+            color: white;
+            opacity: 1;
+        }
+
+        /* Hover effect for desktop */
+        @media (hover: hover) {
+            .category-slide:not(.active):hover {
+                transform: scale(0.97);
+                opacity: 0.8;
+                border-color: var(--primary);
+            }
+            
+            .category-slide:not(.active):hover img {
+                filter: grayscale(0.2) brightness(0.9);
+                transform: scale(0.95);
+            }
+            
+            .category-slide:not(.active):hover .category-label {
+                opacity: 0.7;
+            }
+        }
+
+        .category-slide.active .category-label {
+            color: white;
+        }
+
+        .category-slide.active img {
+            filter: brightness(1.2) grayscale(0);
+        }
+
+        /* Category indicators */
+        .category-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .category-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+        }
+
+        .category-indicator.active {
+            background: var(--primary);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* Swipe hint */
+        .swipe-hint {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            opacity: 0.7;
+        }
+
+        /* Hide swipe hint on desktop */
+        @media (min-width: 641px) {
+            .swipe-hint {
+                display: none;
+            }
+        }
+
+        /* Phone modes */
+        .phone-modes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .phone-modes.hidden {
+            display: none;
+        }
+        
+        .phone-modes.full-width {
+            grid-template-columns: 1fr;
+        }
+
+        .phone-mode {
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border);
+            background: var(--surface);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            letter-spacing: -0.1px;
+        }
+
+        .phone-mode:active {
+            transform: scale(0.97);
+        }
+
+        .phone-mode.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(64, 191, 149, 0.25);
+        }
+        
+        .phone-mode.hide-mode {
+            display: none;
+        }
+
+        /* Range Slider */
+        .range-container {
+            padding: 8px 0;
+        }
+
+        .range-wrapper {
+            position: relative;
+            padding: 12px 0;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            background: var(--border);
+            cursor: pointer;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            cursor: grab;
+            box-shadow: 0 2px 8px rgba(64, 191, 149, 0.4);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        input[type=range]::-webkit-slider-thumb:active {
+            cursor: grabbing;
+            transform: scale(1.15);
+        }
+
+        input[type=range]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            cursor: grab;
+            border: none;
+            box-shadow: 0 2px 8px rgba(64, 191, 149, 0.4);
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .range-labels span {
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 4px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .range-labels span:active {
+            transform: scale(0.95);
+            background: var(--surface-hover);
+            color: var(--primary);
+        }
+
+        .term-value {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            padding: 8px;
+            background: var(--surface-hover);
+            border-radius: var(--radius-sm);
+        }
+
+        [data-theme="dark"] .term-value {
+            color: var(--primary-light);
+        }
+
+        /* Min down hint */
+        .min-down-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--surface-hover);
+            border: 2px solid var(--border);
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+        }
+
+        .min-down-hint:active {
+            transform: scale(0.97);
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .min-down-hint svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Results - Compact & Card Style */
+        .results {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            animation-delay: 0.2s;
+            animation-fill-mode: both;
+            margin-bottom: 16px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .result-item {
+            background: var(--surface-hover);
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        .result-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            letter-spacing: 0.2px;
+        }
+
+        .result-value {
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: -0.3px;
+            color: var(--primary-dark);
+        }
+
+        [data-theme="dark"] .result-value {
+            color: var(--primary-light);
+        }
+
+        .result-total {
+            background: var(--surface-elevated);
+            padding: 18px;
+            border-radius: var(--radius-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 0 4px rgba(64, 191, 149, 0.1);
+        }
+
+        .result-total .result-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .result-total .result-value {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* WhatsApp Button */
+        .wa-button-wrapper {
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            animation-delay: 0.3s;
+            animation-fill-mode: both;
+        }
+
+        .wa-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px 28px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 16px rgba(37, 211, 102, 0.35);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: -0.2px;
+        }
+
+        .wa-button:active {
+            transform: scale(0.98);
+        }
+
+        .wa-button img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .wa-tooltip {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(0.97);
+            }
+        }
+
+        .haptic {
+            animation: pulse 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 640px) {
+            body {
+                padding: 12px;
+            }
+
+            .header img {
+                width: 100px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .results {
+                padding: 16px;
+            }
+
+            input[type=text] {
+                font-size: 18px;
+                padding: 12px 14px;
+            }
+
+            .result-value {
+                font-size: 16px;
+            }
+
+            .result-total .result-value {
+                font-size: 22px;
+            }
+
+            .category-slide {
+                padding: 16px;
+            }
+
+            .category-slide img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .category-label {
+                font-size: 14px;
+            }
+        }
+
+        /* Larger screens */
+        @media (min-width: 641px) {
+            body {
+                padding: 24px;
+            }
+
+            .container {
+                max-width: 480px;
+            }
+
+            .header {
+                margin-bottom: 32px;
+            }
+
+            .card {
+                padding: 24px;
+            }
+
+            .results {
+                padding: 24px;
+            }
+
+            .result-grid {
+                gap: 16px;
+                margin-bottom: 20px;
+            }
+
+            .result-item {
+                padding: 14px;
+            }
+
+            .result-total {
+                padding: 20px;
+            }
+        }
+
+        /* Focus visible for accessibility */
+        *:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+        <svg class="sun-icon" viewBox="0 0 24 24">
+            <path
+                d="M12 17.5C14.7614 17.5 17 15.2614 17 12.5C17 9.73858 14.7614 7.5 12 7.5C9.23858 7.5 7 9.73858 7 12.5C7 15.2614 9.23858 17.5 12 17.5Z" />
+            <path
+                d="M12 1.5V3.5M12 21.5V23.5M4.22 4.72L5.64 6.14M18.36 18.86L19.78 20.28M1.5 12.5H3.5M20.5 12.5H22.5M4.22 20.28L5.64 18.86M18.36 6.14L19.78 4.72"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <svg class="moon-icon" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+    </button>
+
+    <button class="sound-toggle" id="soundToggle" aria-label="Переключить звук">
+        <svg class="sound-on-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 5L6 9H2v6h4l5 4V5z" />
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        </svg>
+        <svg class="sound-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 5L6 9H2v6h4l5 4V5z" />
+            <line x1="23" y1="9" x2="17" y2="15" />
+            <line x1="17" y1="9" x2="23" y2="15" />
+        </svg>
+    </button>
+
+    <div class="container">
+        <div class="header">
+            <img src="logo.png" alt="Hambo">
+            <h1>Калькулятор рассрочки</h1>
+        </div>
+
+        <div class="card">
+            <div class="section">
+                <label>Стоимость товара</label>
+                <div class="input-wrapper">
+                    <input type="text" id="price" placeholder="0 ₽" inputmode="numeric">
+                </div>
+            </div>
+
+            <div class="section">
+                <label>Категория товара</label>
+                <div class="category-carousel">
+                    <div class="category-track" id="categoryTrack">
+                        <div class="category-slide" data-cat="1">
+                            <div class="category-content">
+                                <img src="icon-phone.png" alt="Телефоны" class="cat-icon">
+                                <span class="category-label">Телефоны</span>
+                            </div>
+                        </div>
+                        <div class="category-slide active" data-cat="2">
+                            <div class="category-content">
+                                <img src="icon-box.png" alt="Другие товары" class="cat-icon">
+                                <span class="category-label">Другие товары</span>
+                            </div>
+                        </div>
+                        <div class="category-slide" data-cat="3">
+                            <div class="category-content">
+                                <img src="icon-car.png" alt="Автомобили" class="cat-icon">
+                                <span class="category-label">Автомобили</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-indicators" id="categoryIndicators">
+                    <div class="category-indicator" data-index="0"></div>
+                    <div class="category-indicator active" data-index="1"></div>
+                    <div class="category-indicator" data-index="2"></div>
+                </div>
+                <div class="swipe-hint">← Свайпните для смены категории →</div>
+                
+                <div class="phone-modes hidden" id="phoneModes">
+                    <div class="phone-mode active" data-mode="minDown">Минимальный взнос</div>
+                    <div class="phone-mode" data-mode="minMarkup">Минимальная наценка</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <label>Количество платежей</label>
+                <div class="range-container">
+                    <div class="range-wrapper">
+                        <input type="range" id="term" min="3" max="13" value="6">
+                    </div>
+                    <div class="range-labels" id="rangeLabels">
+                        <span>3</span>
+                        <span>5</span>
+                        <span>8</span>
+                        <span>11</span>
+                        <span>13</span>
+                    </div>
+                    <div class="term-value" id="termLabel"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <label>Первоначальный взнос</label>
+                <div class="input-wrapper">
+                    <input type="text" id="down" placeholder="0 ₽" inputmode="numeric">
+                </div>
+                <div class="min-down-hint" id="minDown">
+                    <svg fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                            d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                    </svg>
+                    <span id="minDownText">Минимум</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="results">
+            <div class="result-grid">
+                <div class="result-item">
+                    <div class="result-label">Первый взнос</div>
+                    <div class="result-value" id="downValue">0 ₽</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Остаток</div>
+                    <div class="result-value" id="restValue">0 ₽</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">В месяц</div>
+                    <div class="result-value" id="monthlyValue">0 ₽</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Платежей</div>
+                    <div class="result-value" id="paymentsCount">0</div>
+                </div>
+            </div>
+            <div class="result-total">
+                <span class="result-label">ИТОГО:</span>
+                <span class="result-value" id="totalValue">0 ₽</span>
+            </div>
+        </div>
+
+        <div class="wa-button-wrapper">
+            <a href="https://wa.me/79298533232" target="_blank" class="wa-button" id="waBtn">
+                <img src="whatsapp-icon.png" alt="WhatsApp">
+                <span id="waBtnText">Отправить в WhatsApp</span>
+            </a>
+            <div class="wa-tooltip">
+                Отправьте расчёт менеджеру для оформления
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ===== MODERN iOS-STYLE AUDIO SYSTEM ===== */
+        let audioCtx;
+        let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
+
+        async function initAudio() {
+            if (audioCtx) return;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        document.addEventListener('touchstart', initAudio, { once: true });
+        document.addEventListener('mousedown', initAudio, { once: true });
+
+        function playSound(type = 'click') {
+            if (!soundEnabled || !audioCtx) return;
+
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            const profiles = {
+                click: {
+                    freq: 1200,
+                    type: 'sine',
+                    duration: 0.04,
+                    volume: 0.15,
+                    envelope: { attack: 0.001, decay: 0.039 }
+                },
+                slider: {
+                    freq: 800,
+                    type: 'sine',
+                    duration: 0.03,
+                    volume: 0.08,
+                    envelope: { attack: 0.001, decay: 0.029 }
+                },
+                success: {
+                    freq: 1400,
+                    type: 'sine',
+                    duration: 0.08,
+                    volume: 0.12,
+                    envelope: { attack: 0.002, decay: 0.078 }
+                },
+                toggle: {
+                    freq: 1000,
+                    type: 'sine',
+                    duration: 0.05,
+                    volume: 0.13,
+                    envelope: { attack: 0.001, decay: 0.049 }
+                },
+                swipe: {
+                    freq: 900,
+                    type: 'sine',
+                    duration: 0.06,
+                    volume: 0.1,
+                    envelope: { attack: 0.001, decay: 0.059 }
+                }
+            };
+
+            const profile = profiles[type] || profiles.click;
+
+            osc.type = profile.type;
+            osc.frequency.value = profile.freq;
+
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(profile.volume, now + profile.envelope.attack);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + profile.envelope.decay);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + profile.duration);
+        }
+
+        function playSliderSound(value) {
+            if (!soundEnabled || !audioCtx) return;
+
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            const minVal = 3, maxVal = 13;
+            const minFreq = 550, maxFreq = 1150;
+            const freq = minFreq + ((value - minVal) / (maxVal - minVal)) * (maxFreq - minFreq);
+
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.06, now + 0.001);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.03);
+        }
+
+        function visualHaptic(el) {
+            if (!el) return;
+            el.classList.remove('haptic');
+            void el.offsetWidth;
+            el.classList.add('haptic');
+        }
+
+        function feedback(el = null, soundType = 'click') {
+            if (!audioCtx) {
+                initAudio();
+            }
+            playSound(soundType);
+            if (el) visualHaptic(el);
+        }
+
+        /* TABLES - ТЕЛЕФОНЫ */
+        const phonePrice = { 4: 0.15, 5: .18, 6: .25, 7: .2917, 8: .3333, 9: .375, 10: .4167, 11: .4583, 12: .5 };
+        const phoneRest = { 4: .2, 5: .24, 6: .3158, 7: .357, 8: .4, 9: .4426, 10: .4855, 11: .5285, 12: .5714 };
+        const phonePriceAlt = { 4: 0.15, 5: 0.18, 6: 0.21, 7: 0.2442, 8: 0.2783, 9: 0.3125, 10: 0.3467, 11: 0.3808, 12: 0.415 };
+        const phoneRestAlt = { 4: 0.2, 5: 0.233333333, 6: 0.28, 7: 0.3112, 8: 0.3556, 9: 0.4, 10: 0.444533333, 11: 0.488933333, 12: 0.533333333 };
+
+        /* TABLES - ДРУГИЕ ТОВАРЫ */
+        const allPrice = {
+            3: 0.1075,
+            4: 0.1417,
+            5: 0.1758,
+            6: 0.21,
+            7: 0.2442,
+            8: 0.2783,
+            9: 0.3125,
+            10: 0.3467,
+            11: 0.3808,
+            12: 0.415,
+            13: 0.4492
+        };
+
+        const allRest = {
+            3: 0.1434,
+            4: 0.188986667,
+            5: 0.2344,
+            6: 0.28,
+            7: 0.3256,
+            8: 0.371066667,
+            9: 0.416666667,
+            10: 0.462266667,
+            11: 0.507733333,
+            12: 0.553333333,
+            13: 0.5992
+        };
+
+        const allPrice150t = {
+            3: 0.095,
+            4: 0.1233,
+            5: 0.1517,
+            6: 0.18,
+            7: 0.2083,
+            8: 0.2367,
+            9: 0.265,
+            10: 0.2933,
+            11: 0.3217,
+            12: 0.35,
+            13: 0.3783
+        };
+
+        const allRest150t = {
+            3: 0.1266,
+            4: 0.1644,
+            5: 0.202266667,
+            6: 0.24,
+            7: 0.277733333,
+            8: 0.3156,
+            9: 0.353333333,
+            10: 0.391066667,
+            11: 0.428933333,
+            12: 0.466666667,
+            13: 0.5044
+        };
+
+        /* TABLES - МАШИНЫ (временно используем те же наценки что и для других товаров) */
+        // TODO: Заменить на реальные наценки для машин
+        const carPrice = { ...allPrice };
+        const carRest = { ...allRest };
+        const carPrice150t = { ...allPrice150t };
+        const carRest150t = { ...allRest150t };
+
+        const MIN_PRICE = 10000;
+
+        // Загружаем сохраненные данные или используем значения по умолчанию
+        let phoneMode = localStorage.getItem('phoneMode') || 'minDown';
+        let category = parseInt(localStorage.getItem('category')) || 2;
+        let lastTerm = parseInt(localStorage.getItem('lastTerm')) || 6;
+        let userTouchedDown = localStorage.getItem('userTouchedDown') === 'true';
+        let lastResult = {};
+
+        /* helpers */
+        const digits = v => v.replace(/\D/g, '');
+        const bank = v => (Math.ceil(v / 100) * 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+
+        /* DOM */
+        const priceInput = document.getElementById('price');
+        const downInput = document.getElementById('down');
+        const termInput = document.getElementById('term');
+        const termLabel = document.getElementById('termLabel');
+        const downValue = document.getElementById('downValue');
+        const restValue = document.getElementById('restValue');
+        const monthlyValue = document.getElementById('monthlyValue');
+        const totalValue = document.getElementById('totalValue');
+        const paymentsCount = document.getElementById('paymentsCount');
+        const minDownDiv = document.getElementById('minDown');
+        const minDownText = document.getElementById('minDownText');
+        const html = document.documentElement;
+
+        /* money input */
+        function bindMoneyInput(el, isDown = false) {
+            let original = '', editing = false;
+
+            el.addEventListener('focus', () => {
+                original = el.value;
+                editing = false;
+                el.value = digits(el.value).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                setTimeout(() => el.setSelectionRange(el.value.length, el.value.length), 0);
+            });
+
+            el.addEventListener('keydown', e => {
+                if (e.key === 'Escape') {
+                    el.value = original;
+                    el.blur();
+                }
+                if (e.key === 'Enter') el.blur();
+            });
+
+            el.addEventListener('input', () => {
+                editing = true;
+                const cursorPos = el.selectionStart;
+                const oldLength = el.value.length;
+
+                const digitsOnly = digits(el.value);
+                const formatted = digitsOnly.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+                el.value = formatted;
+
+                const newLength = formatted.length;
+                const lengthDiff = newLength - oldLength;
+                const newCursorPos = cursorPos + lengthDiff;
+
+                if (formatted[newCursorPos - 1] === ' ') {
+                    el.setSelectionRange(newCursorPos + 1, newCursorPos + 1);
+                } else {
+                    el.setSelectionRange(newCursorPos, newCursorPos);
+                }
+
+                if (isDown) {
+                    userTouchedDown = true;
+                    localStorage.setItem('userTouchedDown', 'true');
+                }
+            });
+
+            el.addEventListener('blur', () => {
+                if (!editing) {
+                    el.value = original;
+                    return;
+                }
+
+                let value = Number(digits(el.value)) || 0;
+
+                if (!isDown && value < MIN_PRICE) {
+                    value = MIN_PRICE;
+                }
+
+                if (isDown) {
+                    const price = Number(digits(priceInput.value)) || 0;
+                    if (value > price) {
+                        value = price;
+                    }
+                }
+
+                el.value = bank(value);
+                
+                if (!isDown) {
+                    localStorage.setItem('price', value);
+                } else {
+                    localStorage.setItem('down', value);
+                }
+                
+                calc();
+            });
+        }
+        bindMoneyInput(priceInput);
+        bindMoneyInput(downInput, true);
+
+        /* UPDATE CATEGORY ICONS */
+        function updateCategoryIcons() {
+            const isDark = html.getAttribute('data-theme') === 'dark';
+
+            document.querySelectorAll('.category-slide').forEach(slide => {
+                const img = slide.querySelector('.cat-icon');
+                const isActive = slide.classList.contains('active');
+                const cat = slide.dataset.cat;
+
+                if (isDark && !isActive) {
+                    if (cat === '1') {
+                        img.src = 'icon-phone-dark.png';
+                    } else if (cat === '2') {
+                        img.src = 'icon-box-dark.png';
+                    } else if (cat === '3') {
+                        img.src = 'icon-car-dark.png';
+                    }
+                } else {
+                    if (cat === '1') {
+                        img.src = 'icon-phone.png';
+                    } else if (cat === '2') {
+                        img.src = 'icon-box.png';
+                    } else if (cat === '3') {
+                        img.src = 'icon-car.png';
+                    }
+                }
+            });
+        }
+
+        /* CATEGORY CAROUSEL */
+        const categoryTrack = document.getElementById('categoryTrack');
+        const categoryIndicators = document.getElementById('categoryIndicators');
+        let currentCategoryIndex = category - 1;
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+        let dragDistance = 0;
+
+        function updateCategoryCarousel(animate = true) {
+            const offset = -currentCategoryIndex * 100;
+            if (animate) {
+                categoryTrack.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            } else {
+                categoryTrack.style.transition = 'none';
+            }
+            categoryTrack.style.transform = `translateX(${offset}%)`;
+
+            // Update active states
+            document.querySelectorAll('.category-slide').forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentCategoryIndex);
+            });
+
+            document.querySelectorAll('.category-indicator').forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentCategoryIndex);
+            });
+
+            updateCategoryIcons();
+        }
+
+        function handleCategoryChange() {
+            category = currentCategoryIndex + 1;
+            userTouchedDown = false;
+            
+            localStorage.setItem('category', category);
+            localStorage.setItem('userTouchedDown', 'false');
+
+            updateRangeLabels();
+            updatePhoneModesVisibility();
+            calc();
+            feedback(null, 'swipe');
+        }
+
+        // Touch events
+        categoryTrack.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            currentX = startX;
+            isDragging = true;
+            dragDistance = 0;
+            categoryTrack.style.transition = 'none';
+        });
+
+        categoryTrack.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            currentX = e.touches[0].clientX;
+            dragDistance = Math.abs(currentX - startX);
+            const diff = currentX - startX;
+            const offset = -currentCategoryIndex * 100 + (diff / categoryTrack.offsetWidth) * 100;
+            categoryTrack.style.transform = `translateX(${offset}%)`;
+        });
+
+        categoryTrack.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const diff = currentX - startX;
+            const threshold = 50;
+
+            if (diff > threshold && currentCategoryIndex > 0) {
+                currentCategoryIndex--;
+                handleCategoryChange();
+            } else if (diff < -threshold && currentCategoryIndex < 2) {
+                currentCategoryIndex++;
+                handleCategoryChange();
+            }
+
+            updateCategoryCarousel(true);
+            
+            // Reset drag distance after a delay
+            setTimeout(() => {
+                dragDistance = 0;
+            }, 100);
+        });
+
+        // Mouse events (for desktop)
+        categoryTrack.addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+            currentX = startX;
+            isDragging = true;
+            dragDistance = 0;
+            categoryTrack.style.transition = 'none';
+            categoryTrack.style.cursor = 'grabbing';
+        });
+
+        categoryTrack.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            currentX = e.clientX;
+            dragDistance = Math.abs(currentX - startX);
+            const diff = currentX - startX;
+            const offset = -currentCategoryIndex * 100 + (diff / categoryTrack.offsetWidth) * 100;
+            categoryTrack.style.transform = `translateX(${offset}%)`;
+        });
+
+        categoryTrack.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            categoryTrack.style.cursor = 'pointer';
+            
+            const diff = currentX - startX;
+            const threshold = 50;
+
+            // Only switch if dragged enough
+            if (Math.abs(diff) > threshold) {
+                if (diff > threshold && currentCategoryIndex > 0) {
+                    currentCategoryIndex--;
+                    handleCategoryChange();
+                } else if (diff < -threshold && currentCategoryIndex < 2) {
+                    currentCategoryIndex++;
+                    handleCategoryChange();
+                }
+            }
+
+            updateCategoryCarousel(true);
+            
+            // Reset drag distance after a delay
+            setTimeout(() => {
+                dragDistance = 0;
+            }, 100);
+        });
+
+        categoryTrack.addEventListener('mouseleave', () => {
+            if (isDragging) {
+                isDragging = false;
+                categoryTrack.style.cursor = 'pointer';
+                updateCategoryCarousel(true);
+                
+                setTimeout(() => {
+                    dragDistance = 0;
+                }, 100);
+            }
+        });
+
+        // Click on indicators
+        document.querySelectorAll('.category-indicator').forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentCategoryIndex = index;
+                handleCategoryChange();
+                updateCategoryCarousel(true);
+            });
+        });
+
+        // Click on slides (tap to activate on mobile, click on desktop)
+        document.querySelectorAll('.category-slide').forEach((slide, index) => {
+            slide.addEventListener('click', (e) => {
+                // Only switch if not dragging (drag distance is small)
+                const wasDragging = dragDistance > 10;
+                
+                if (!wasDragging) {
+                    if (currentCategoryIndex !== index) {
+                        currentCategoryIndex = index;
+                        handleCategoryChange();
+                        updateCategoryCarousel(true);
+                    }
+                }
+            });
+        });
+
+        /* Update range labels */
+        function updateRangeLabels() {
+            const rangeLabels = document.getElementById('rangeLabels');
+
+            if (category === 1) {
+                termInput.min = 4;
+                termInput.max = 12;
+                rangeLabels.innerHTML = `
+                    <span>4</span>
+                    <span>6</span>
+                    <span>8</span>
+                    <span>10</span>
+                    <span>12</span>
+                `;
+                if (lastTerm < 4) lastTerm = 4;
+                if (lastTerm > 12) lastTerm = 12;
+            } else {
+                termInput.min = 3;
+                termInput.max = 13;
+                rangeLabels.innerHTML = `
+                    <span>3</span>
+                    <span>5</span>
+                    <span>8</span>
+                    <span>11</span>
+                    <span>13</span>
+                `;
+            }
+
+            termInput.value = lastTerm;
+            updateSlider();
+            updatePhoneModesVisibility();
+
+            document.querySelectorAll('.range-labels span').forEach(label => {
+                label.addEventListener('click', () => {
+                    const oldTerm = lastTerm;
+                    const value = parseInt(label.textContent);
+                    termInput.value = value;
+                    lastTerm = value;
+                    
+                    if (category === 1) {
+                        const wasSpecial = (oldTerm === 4 || oldTerm === 5);
+                        const isSpecial = (lastTerm === 4 || lastTerm === 5);
+                        
+                        if (wasSpecial !== isSpecial) {
+                            userTouchedDown = false;
+                            localStorage.setItem('userTouchedDown', 'false');
+                        }
+                    }
+                    
+                    localStorage.setItem('lastTerm', lastTerm);
+                    updateSlider();
+                    updatePhoneModesVisibility();
+                    calc();
+                    feedback(label);
+                });
+            });
+        }
+        
+        /* Функция для показа/скрытия кнопок режимов телефонов */
+        function updatePhoneModesVisibility() {
+            const modes = document.getElementById('phoneModes');
+            const minMarkupBtn = document.querySelector('.phone-mode[data-mode="minMarkup"]');
+            
+            if (category === 1) {
+                modes.classList.remove('hidden');
+                
+                if (lastTerm === 4 || lastTerm === 5) {
+                    minMarkupBtn.classList.add('hide-mode');
+                    modes.classList.add('full-width');
+                    phoneMode = 'minDown';
+                    localStorage.setItem('phoneMode', phoneMode);
+                    document.querySelectorAll('.phone-mode').forEach(btn => {
+                        btn.classList.remove('active');
+                        if (btn.dataset.mode === 'minDown') {
+                            btn.classList.add('active');
+                        }
+                    });
+                } else {
+                    minMarkupBtn.classList.remove('hide-mode');
+                    modes.classList.remove('full-width');
+                }
+            } else {
+                modes.classList.add('hidden');
+            }
+        }
+
+        /* CALC */
+        function calc() {
+            let price = Number(digits(priceInput.value));
+
+            if (price < MIN_PRICE) {
+                price = MIN_PRICE;
+                priceInput.value = bank(MIN_PRICE);
+            }
+
+            let downRaw = Number(digits(downInput.value)) || 0;
+
+            if (downRaw > price) {
+                downRaw = price;
+                downInput.value = bank(price);
+                userTouchedDown = true;
+            }
+
+            const term = lastTerm, N = term - 1;
+            let down = downRaw;
+
+            let p, r;
+
+            if (category === 1) {
+                // Телефоны
+                if (term === 4 || term === 5) {
+                    p = phonePrice;
+                    r = phoneRest;
+                } else {
+                    if (phoneMode === 'minDown') {
+                        p = phonePrice;
+                        r = phoneRest;
+                    } else {
+                        p = phonePriceAlt;
+                        r = phoneRestAlt;
+                    }
+                }
+            } else if (category === 2) {
+                // Другие товары
+                if (price < 150000) {
+                    p = allPrice;
+                    r = allRest;
+                } else {
+                    p = allPrice150t;
+                    r = allRest150t;
+                }
+            } else if (category === 3) {
+                // Машины (пока используем те же наценки что и для других товаров)
+                if (price < 150000) {
+                    p = carPrice;
+                    r = carRest;
+                } else {
+                    p = carPrice150t;
+                    r = carRest150t;
+                }
+            }
+
+            const fee = category === 1 ? 1000 : 0;
+
+            let minDown;
+
+            if (category === 1) {
+                if (phoneMode === 'minDown' || term === 4 || term === 5) {
+                    minDown = Math.ceil(((price + fee) * (p[term] + 1) / term) / 100) * 100;
+                } else {
+                    minDown = Math.ceil((price * 0.3) / 100) * 100;
+                }
+            } else {
+                // Для других товаров и машин
+                minDown = Math.ceil((price * 0.25) / 100) * 100;
+            }
+
+            minDownText.innerText = 'Минимум: ' + bank(minDown);
+
+            if (!userTouchedDown) {
+                down = minDown;
+                downInput.value = bank(minDown);
+                localStorage.setItem('down', minDown);
+            } else {
+                down = downRaw;
+            }
+
+            let totalCost;
+            if (down === minDown) {
+                totalCost = (price + fee) * (p[term] + 1);
+            } else {
+                totalCost = (price + fee - down) * (r[term] + 1) + down;
+            }
+
+            const monthly = Math.ceil(((totalCost - down) / N) / 100) * 100;
+            const total = monthly * N + down;
+
+            lastResult = {
+                price: price,
+                down: down,
+                rest: total - down,
+                monthly: monthly,
+                total: total
+            };
+
+            function paymentWord(n) {
+                n = Math.abs(n) % 100;
+                const n1 = n % 10;
+                if (n > 10 && n < 20) return 'платежей';
+                if (n1 === 1) return 'платёж';
+                if (n1 >= 2 && n1 <= 4) return 'платежа';
+                return 'платежей';
+            }
+
+            termLabel.innerText = term + ' ' + paymentWord(term);
+            downValue.innerText = bank(down);
+            restValue.innerText = bank(total - down);
+            monthlyValue.innerText = bank(monthly);
+            totalValue.innerText = bank(total);
+            paymentsCount.innerText = N;
+        }
+
+        function buildWhatsAppText() {
+            let categoryText;
+            if (category === 1) {
+                categoryText = 'Телефоны';
+                categoryText += phoneMode === 'minDown'
+                    ? ' (Минимальный взнос)'
+                    : ' (Минимальная наценка)';
+            } else if (category === 2) {
+                categoryText = 'Другие товары';
+            } else if (category === 3) {
+                categoryText = 'Автомобили';
+            }
+
+            return `Здравствуйте!
+Интересует рассрочка:
+
+Категория товара: ${categoryText}
+Стоимость товара: ${bank(lastResult.price)}
+Платежей: ${lastTerm}
+
+Взнос: ${bank(lastResult.down)}
+Остаток: ${bank(lastResult.rest)}
+Ежемесячный платёж: ${bank(lastResult.monthly)}
+Общая сумма: ${bank(lastResult.total)}`.trim();
+        }
+
+        /* click min down */
+        minDownDiv.addEventListener('click', () => {
+            feedback(minDownDiv);
+            const v = digits(minDownText.innerText);
+            if (!v) return;
+            userTouchedDown = true;
+            localStorage.setItem('userTouchedDown', 'true');
+            const minDownValue = Number(v);
+            downInput.value = bank(minDownValue);
+            localStorage.setItem('down', minDownValue);
+            downInput.focus();
+            downInput.blur();
+            calc();
+        });
+
+        /* SLIDER */
+        function updateSlider() {
+            const min = +termInput.min;
+            const max = +termInput.max;
+            const val = +termInput.value;
+            const percent = (val - min) / (max - min);
+
+            termInput.style.background = `linear-gradient(to right, var(--primary) 0%, var(--primary) ${percent * 100}%, var(--border) ${percent * 100}%, var(--border) 100%)`;
+        }
+
+        termInput.addEventListener('input', () => {
+            const oldTerm = lastTerm;
+            lastTerm = +termInput.value;
+            
+            if (category === 1) {
+                const wasSpecial = (oldTerm === 4 || oldTerm === 5);
+                const isSpecial = (lastTerm === 4 || lastTerm === 5);
+                
+                if (wasSpecial !== isSpecial) {
+                    userTouchedDown = false;
+                    localStorage.setItem('userTouchedDown', 'false');
+                }
+            }
+            
+            localStorage.setItem('lastTerm', lastTerm);
+            updateSlider();
+            updatePhoneModesVisibility();
+            calc();
+            playSliderSound(lastTerm);
+        });
+
+        document.querySelectorAll('.phone-mode').forEach(btn => {
+            btn.addEventListener('click', () => {
+                feedback(btn);
+                document.querySelectorAll('.phone-mode').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                phoneMode = btn.dataset.mode;
+                userTouchedDown = false;
+                
+                localStorage.setItem('phoneMode', phoneMode);
+                localStorage.setItem('userTouchedDown', 'false');
+                
+                calc();
+            });
+        });
+
+        /* WhatsApp Button */
+        const waBtn = document.getElementById('waBtn');
+
+        if (waBtn) {
+            waBtn.addEventListener('click', e => {
+                feedback(waBtn, 'success');
+                const text = buildWhatsAppText();
+                const encoded = encodeURIComponent(text);
+                waBtn.href = `https://wa.me/79298533232?text=${encoded}`;
+            });
+        }
+
+        /* Theme Toggle */
+        const themeToggle = document.getElementById('themeToggle');
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            feedback(themeToggle, 'toggle');
+            const theme = html.getAttribute('data-theme');
+            const newTheme = theme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateCategoryIcons();
+        });
+
+        /* Sound Toggle */
+        const soundToggle = document.getElementById('soundToggle');
+
+        if (!soundEnabled) {
+            soundToggle.classList.add('muted');
+        }
+
+        soundToggle.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            localStorage.setItem('soundEnabled', soundEnabled);
+
+            if (soundEnabled) {
+                soundToggle.classList.remove('muted');
+                playSound('toggle');
+            } else {
+                soundToggle.classList.add('muted');
+            }
+
+            visualHaptic(soundToggle);
+        });
+
+        /* init */
+        const savedPrice = localStorage.getItem('price');
+        const savedDown = localStorage.getItem('down');
+        
+        if (savedPrice) {
+            priceInput.value = bank(Number(savedPrice));
+        } else {
+            priceInput.value = bank(75000);
+        }
+        
+        // Устанавливаем активный режим телефонов
+        document.querySelectorAll('.phone-mode').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.mode === phoneMode) {
+                btn.classList.add('active');
+            }
+        });
+        
+        // Initialize carousel position
+        currentCategoryIndex = category - 1;
+        updateCategoryCarousel(false);
+        
+        updateRangeLabels();
+        updateSlider();
+        updatePhoneModesVisibility();
+        calc();
+        
+        if (savedDown && userTouchedDown) {
+            downInput.value = bank(Number(savedDown));
+        }
+        
+        updateCategoryIcons();
+    </script>
+</body>
+
+</html>
