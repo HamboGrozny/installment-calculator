@@ -3,790 +3,423 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HamBo — Калькулятор рассрочки</title>
     <link rel="icon" href="favicon.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #40BF95;
-            --primary-light: #5DD4AD;
-            --primary-dark: #0D7359;
+            --primary: #0E8C6A;
+            --primary-light: #2AB88E;
+            --primary-dark: #076B50;
             --primary-darker: #024034;
-            --secondary: #F2C84B;
-            --accent: #F28C8C;
-            --bg-gradient-start: #F8FFFE;
-            --bg-gradient-end: #E8F6F3;
-            --surface: #ffffff;
-            --surface-elevated: #ffffff;
-            --surface-hover: #F0FAF7;
-            --text-primary: #1A1F1E;
-            --text-secondary: #3D4846;
-            --text-muted: #6B7573;
-            --border: #E0E8E6;
-            --border-focus: #40BF95;
-            --shadow-sm: 0 1px 3px rgba(13, 115, 89, 0.06);
-            --shadow-md: 0 4px 16px rgba(13, 115, 89, 0.08);
-            --shadow-lg: 0 16px 48px rgba(13, 115, 89, 0.12);
-            --shadow-glow: 0 0 0 0 rgba(64, 191, 149, 0);
+            --primary-glow: rgba(14, 140, 106, 0.15);
+            --primary-glow-strong: rgba(14, 140, 106, 0.3);
+            --accent: #FFB020;
+            --accent-soft: rgba(255, 176, 32, 0.12);
+
+            --bg: #F4F6F8;
+            --bg-subtle: #EEF1F4;
+            --surface: #FFFFFF;
+            --surface-raised: #FFFFFF;
+            --surface-hover: #F7FAF9;
+            --surface-active: #EFF5F3;
+
+            --text-primary: #111827;
+            --text-secondary: #4B5563;
+            --text-muted: #9CA3AF;
+            --text-inverse: #FFFFFF;
+
+            --border: #E5E7EB;
+            --border-strong: #D1D5DB;
+            --divider: #F3F4F6;
+
+            --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
+            --shadow-primary: 0 4px 20px rgba(14, 140, 106, 0.2);
+            --shadow-wa: 0 4px 20px rgba(37, 211, 102, 0.3);
+
             --radius-sm: 10px;
             --radius-md: 14px;
-            --radius-lg: 18px;
-            --radius-xl: 24px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-full: 9999px;
+
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+            --header-logo-filter: none;
         }
 
         [data-theme="dark"] {
-            --bg-gradient-start: #0B1612;
-            --bg-gradient-end: #162420;
-            --surface: #1A2825;
-            --surface-elevated: #253430;
-            --surface-hover: #2D3E3A;
-            --text-primary: #F0F5F3;
-            --text-secondary: #D4E0DD;
-            --text-muted: #8A9894;
-            --border: #2D4039;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+            --bg: #0C1117;
+            --bg-subtle: #141B24;
+            --surface: #1A2332;
+            --surface-raised: #212D3E;
+            --surface-hover: #243040;
+            --surface-active: #2A3850;
+
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+
+            --border: #2A3544;
+            --border-strong: #374357;
+            --divider: #1E2A38;
+
+            --shadow-xs: 0 1px 2px rgba(0,0,0,0.2);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.25);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.3);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.4);
+            --shadow-primary: 0 4px 20px rgba(14, 140, 106, 0.15);
+
+            --primary-glow: rgba(42, 184, 142, 0.1);
+            --primary-glow-strong: rgba(42, 184, 142, 0.2);
+
+            --header-logo-filter: brightness(0) invert(1);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(160deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
             color: var(--text-primary);
-            min-height: 100vh;
-            padding: 12px;
+            min-height: 100dvh;
+            padding: 0;
             line-height: 1.5;
-            position: relative;
             overflow-x: hidden;
-        }
-        
-        @media (max-width: 480px) {
-            body {
-                padding: 8px;
-            }
+            transition: background 0.5s var(--ease-smooth), color 0.3s var(--ease-smooth);
         }
 
-        /* Decorative background elements */
-        body::before,
-        body::after {
-            content: '';
+        /* === BACKGROUND DECORATION === */
+        .bg-decor {
             position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.12;
+            top: 0; left: 0; right: 0; bottom: 0;
             pointer-events: none;
             z-index: 0;
+            overflow: hidden;
+        }
+        .bg-decor::before {
+            content: '';
+            position: absolute;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            top: -200px; right: -200px;
+            border-radius: 50%;
+        }
+        .bg-decor::after {
+            content: '';
+            position: absolute;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+            bottom: -150px; left: -150px;
+            border-radius: 50%;
         }
 
-        body::before {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-            top: -150px;
-            right: -150px;
+        /* Grain overlay */
+        .bg-grain {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
         }
 
-        body::after {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
-            bottom: -100px;
-            left: -100px;
-        }
+        [data-theme="dark"] .bg-grain { opacity: 0.04; }
 
-        .container {
-            max-width: 600px;
+        /* === LAYOUT === */
+        .app {
+            max-width: 520px;
             margin: 0 auto;
+            padding: 16px 16px 32px;
             position: relative;
             z-index: 1;
         }
+        @media (min-width: 641px) {
+            .app { padding: 32px 24px 48px; max-width: 500px; }
+        }
+        @media (min-width: 1024px) {
+            .app { padding: 48px 24px 64px; }
+        }
 
-        /* Theme Toggle */
-        .theme-toggle {
-            position: fixed;
-            top: 16px;
-            right: 16px;
-            width: 44px;
-            height: 44px;
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 50%;
+        /* === TOP BAR === */
+        .topbar {
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-md);
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            justify-content: space-between;
+            padding: 4px 0 20px;
         }
-        
-        @media (max-width: 480px) {
-            .theme-toggle {
-                top: 10px;
-                right: 10px;
-                width: 40px;
-                height: 40px;
-            }
+        @media (min-width: 641px) {
+            .topbar { padding: 0 0 32px; }
         }
 
-        .theme-toggle:active {
-            transform: scale(0.9);
-        }
-
-        .theme-toggle svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--text-primary);
-            transition: all 0.3s ease;
-        }
-
-        .theme-toggle .sun-icon {
-            display: none;
-        }
-
-        .theme-toggle .moon-icon {
-            display: block;
-        }
-
-        [data-theme="dark"] .theme-toggle .sun-icon {
-            display: block;
-        }
-
-        [data-theme="dark"] .theme-toggle .moon-icon {
-            display: none;
-        }
-
-        /* Sound Toggle */
-        .sound-toggle {
-            position: fixed;
-            top: 16px;
-            right: 68px;
-            width: 44px;
-            height: 44px;
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 50%;
+        .topbar-logo {
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-md);
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            gap: 0;
+            text-decoration: none;
         }
-        
-        @media (max-width: 480px) {
-            .sound-toggle {
-                top: 10px;
-                right: 56px;
-                width: 40px;
-                height: 40px;
-            }
+        .topbar-logo img {
+            height: 32px;
+            width: auto;
+            transition: filter 0.4s var(--ease-smooth);
         }
-
-        .sound-toggle:active {
-            transform: scale(0.9);
-        }
-
-        .sound-toggle svg {
-            width: 20px;
-            height: 20px;
-            stroke: var(--text-primary);
-            transition: all 0.3s ease;
-        }
-
-        .sound-toggle .sound-on-icon {
-            display: block;
-        }
-
-        .sound-toggle .sound-off-icon {
-            display: none;
-        }
-
-        .sound-toggle.muted .sound-on-icon {
-            display: none;
-        }
-
-        .sound-toggle.muted .sound-off-icon {
-            display: block;
-        }
-
-        .sound-toggle.muted {
-            opacity: 0.5;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            animation: fadeInDown 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .header img {
-            width: 100px;
-            filter: drop-shadow(0 4px 16px rgba(64, 191, 149, 0.15));
-        }
-
-        [data-theme="dark"] .header img {
+        [data-theme="dark"] .topbar-logo img {
             content: url('logo-dark.png');
         }
 
-        .header h1 {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-top: 8px;
+        .topbar-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full);
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            transition: all 0.25s var(--ease-smooth);
+            color: var(--text-secondary);
+            box-shadow: var(--shadow-xs);
+            position: relative;
+        }
+        .icon-btn:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-strong);
+            box-shadow: var(--shadow-sm);
+        }
+        .icon-btn:active {
+            transform: scale(0.92);
+        }
+        .icon-btn svg {
+            width: 18px; height: 18px;
+            fill: currentColor;
+            transition: all 0.25s var(--ease-smooth);
+        }
+        .icon-btn .stroke-icon {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .icon-btn .sun-icon { display: none; }
+        .icon-btn .moon-icon { display: block; }
+        [data-theme="dark"] .icon-btn .sun-icon { display: block; }
+        [data-theme="dark"] .icon-btn .moon-icon { display: none; }
+
+        .icon-btn .sound-on { display: block; }
+        .icon-btn .sound-off { display: none; }
+        .icon-btn.muted .sound-on { display: none; }
+        .icon-btn.muted .sound-off { display: block; }
+        .icon-btn.muted { opacity: 0.45; }
+
+        /* === PAGE TITLE === */
+        .page-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
             letter-spacing: -0.5px;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
-        
-        @media (max-width: 480px) {
-            .header {
-                margin-bottom: 12px;
-            }
-            
-            .header img {
-                width: 80px;
-            }
-            
-            .header h1 {
-                font-size: 18px;
-                margin-top: 6px;
-            }
+        @media (min-width: 641px) {
+            .page-title { font-size: 26px; margin-bottom: 28px; }
         }
 
-        [data-theme="dark"] .header h1 {
-            color: var(--primary-light);
-        }
-
-        /* Card */
+        /* === CARD === */
         .card {
             background: var(--surface);
             border-radius: var(--radius-lg);
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow-md);
             border: 1px solid var(--border);
-            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            animation-delay: 0.1s;
-            animation-fill-mode: both;
-            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            margin-bottom: 16px;
+            transition: background 0.4s var(--ease-smooth), border-color 0.4s var(--ease-smooth), box-shadow 0.4s var(--ease-smooth);
         }
-        
-        @media (max-width: 480px) {
-            .card {
-                padding: 12px;
-                margin-bottom: 10px;
-                border-radius: 14px;
-            }
+        @media (min-width: 641px) {
+            .card { border-radius: var(--radius-xl); margin-bottom: 20px; }
         }
 
-        .section {
-            margin-bottom: 20px;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        .card-inner {
+            padding: 20px;
+        }
+        @media (min-width: 641px) {
+            .card-inner { padding: 24px; }
+        }
+
+        /* === SECTION SPACING === */
+        .field-group {
+            margin-bottom: 24px;
+            transition: all 0.5s var(--ease-out);
             overflow: hidden;
             max-height: 500px;
             opacity: 1;
         }
-        
-        @media (max-width: 480px) {
-            .section {
-                margin-bottom: 12px;
-            }
-        }
-
-        .section.hidden {
+        .field-group.hidden {
             max-height: 0;
             opacity: 0;
             margin-bottom: 0;
+            pointer-events: none;
         }
+        .field-group:last-child { margin-bottom: 0; }
 
-        .section:last-child {
-            margin-bottom: 0;
-        }
-
-        label {
+        .field-label {
             display: block;
             font-size: 13px;
             font-weight: 600;
             color: var(--text-muted);
-            margin-bottom: 8px;
-            letter-spacing: 0.3px;
-        }
-        
-        @media (max-width: 480px) {
-            label {
-                font-size: 12px;
-                margin-bottom: 6px;
-            }
+            margin-bottom: 10px;
+            letter-spacing: 0.2px;
+            text-transform: uppercase;
         }
 
-        /* Input Styling */
-        .input-wrapper {
-            position: relative;
-        }
-
-        input[type=text] {
+        /* === INPUTS === */
+        .text-input {
             width: 100%;
             padding: 14px 16px;
             border-radius: var(--radius-md);
-            border: 2px solid var(--border);
-            background: var(--surface);
+            border: 1.5px solid var(--border);
+            background: var(--bg);
             color: var(--text-primary);
-            font-size: 20px;
-            font-weight: 600;
-            font-family: 'JetBrains Mono', monospace;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 22px;
+            font-weight: 500;
+            font-family: 'IBM Plex Mono', monospace;
+            font-variant-numeric: tabular-nums;
+            transition: all 0.3s var(--ease-smooth);
             outline: none;
+            letter-spacing: -0.3px;
         }
-        
-        @media (max-width: 480px) {
-            input[type=text] {
-                padding: 12px 14px;
-                font-size: 18px;
-            }
+        .text-input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
         }
-
-        input[type=text]:focus {
+        .text-input:focus {
             border-color: var(--primary);
-            background: var(--surface-hover);
-            box-shadow: 0 0 0 3px rgba(64, 191, 149, 0.1);
-        }
-
-        /* Category Carousel */
-        .category-carousel {
-            position: relative;
-            overflow: hidden;
-            border-radius: var(--radius-md);
-            margin-top: 8px;
-        }
-        
-        /* Navigation arrows */
-        .category-nav-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 32px;
-            height: 32px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--border);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            opacity: 0.85;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        [data-theme="dark"] .category-nav-arrow {
-            background: rgba(37, 52, 48, 0.95);
-        }
-        
-        .category-nav-arrow svg {
-            width: 16px;
-            height: 16px;
-            fill: var(--primary);
-            transition: fill 0.3s ease;
-        }
-        
-        .category-nav-arrow.left {
-            left: 8px;
-        }
-        
-        .category-nav-arrow.right {
-            right: 8px;
-        }
-        
-        /* Show arrows on hover or touch */
-        .category-carousel:hover .category-nav-arrow {
-            opacity: 1;
-        }
-        
-        @media (hover: hover) {
-            .category-nav-arrow:hover {
-                opacity: 1;
-                background: var(--primary);
-                border-color: var(--primary);
-            }
-            
-            .category-nav-arrow:hover svg {
-                fill: white;
-            }
-        }
-        
-        /* Animation for arrows */
-        @keyframes arrowPulse {
-            0%, 100% {
-                transform: translateY(-50%) translateX(0);
-            }
-            50% {
-                transform: translateY(-50%) translateX(-3px);
-            }
-        }
-        
-        @keyframes arrowPulseRight {
-            0%, 100% {
-                transform: translateY(-50%) translateX(0);
-            }
-            50% {
-                transform: translateY(-50%) translateX(3px);
-            }
-        }
-        
-        .category-nav-arrow.left {
-            animation: arrowPulse 2s ease-in-out infinite;
-        }
-        
-        .category-nav-arrow.right {
-            animation: arrowPulseRight 2s ease-in-out infinite;
-        }
-        
-        /* Mobile adjustments */
-        @media (max-width: 640px) {
-            .category-nav-arrow {
-                width: 28px;
-                height: 28px;
-                opacity: 0.9;
-            }
-            
-            .category-nav-arrow svg {
-                width: 14px;
-                height: 14px;
-            }
-        }
-
-        .category-track {
-            display: flex;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            touch-action: pan-y;
-            will-change: transform;
-        }
-        
-        .category-track.dragging {
-            transition: none;
-        }
-
-        .category-slide {
-            min-width: 100%;
-            padding: 20px;
-            border-radius: var(--radius-md);
-            border: 2px solid var(--border);
             background: var(--surface);
-            cursor: pointer;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        /* === CATEGORY TABS (segmented control) === */
+        .category-tabs {
+            display: flex;
+            background: var(--bg);
+            border-radius: var(--radius-md);
+            padding: 4px;
+            gap: 4px;
             position: relative;
-            overflow: hidden;
+        }
+
+        .cat-tab {
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
-            user-select: none;
-            transform: scale(0.95);
-            opacity: 0.6;
-        }
-        
-        @media (max-width: 480px) {
-            .category-slide {
-                padding: 14px;
-                gap: 8px;
-            }
-        }
-
-        .category-slide.active {
-            transform: scale(1);
-            opacity: 1;
-            border-color: var(--primary);
-            box-shadow: 0 4px 16px rgba(64, 191, 149, 0.25);
-        }
-
-        .category-slide::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            opacity: 0;
-            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .category-slide.active::before {
-            opacity: 1;
-        }
-
-        .category-content {
+            gap: 6px;
+            padding: 14px 8px;
+            border-radius: calc(var(--radius-md) - 2px);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.35s var(--ease-out);
             position: relative;
             z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            color: var(--text-muted);
+            font-family: inherit;
         }
+        .cat-tab:active { transform: scale(0.97); }
 
-        .category-slide img {
-            width: 48px;
-            height: 48px;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            filter: grayscale(0.5) brightness(0.8);
-            transform: scale(0.9);
-        }
-
-        .category-slide.active img {
-            filter: brightness(1.2) grayscale(0);
-            transform: scale(1);
-        }
-
-        .category-label {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-primary);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            letter-spacing: -0.3px;
-            text-align: center;
+        .cat-tab-icon {
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.35s var(--ease-out);
             opacity: 0.5;
         }
-        
-        @media (max-width: 480px) {
-            .category-label {
-                font-size: 14px;
-            }
+        .cat-tab-icon svg {
+            width: 28px; height: 28px;
+            fill: currentColor;
+            transition: all 0.35s var(--ease-out);
         }
 
-        .category-slide.active .category-label {
-            color: white;
-            opacity: 1;
-        }
-
-        /* Hover effect for desktop */
-        @media (hover: hover) {
-            .category-slide:not(.active):hover {
-                transform: scale(0.97);
-                opacity: 0.8;
-                border-color: var(--primary);
-            }
-            
-            .category-slide:not(.active):hover img {
-                filter: grayscale(0.2) brightness(0.9);
-                transform: scale(0.95);
-            }
-            
-            .category-slide:not(.active):hover .category-label {
-                opacity: 0.7;
-            }
-        }
-
-        /* Car term selection */
-        .car-term-selection {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-top: 12px;
-            overflow: hidden;
-            max-height: 0;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .car-term-selection:not(.hidden) {
-            max-height: 100px;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .car-term-selection.hidden {
-            max-height: 0;
-            opacity: 0;
-            transform: translateY(-10px);
-            margin-top: 0;
-        }
-
-        .car-term-btn {
-            padding: 16px 12px;
-            border-radius: var(--radius-md);
-            border: 2px solid var(--border);
-            background: var(--surface);
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            transform: scale(0.95);
-            opacity: 0;
-        }
-        
-        @media (max-width: 480px) {
-            .car-term-btn {
-                padding: 12px 8px;
-                gap: 2px;
-            }
-        }
-
-        .car-term-selection:not(.hidden) .car-term-btn {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .car-term-btn:nth-child(1) {
-            transition-delay: 0.1s;
-        }
-
-        .car-term-btn:nth-child(2) {
-            transition-delay: 0.15s;
-        }
-
-        .car-term-btn:nth-child(3) {
-            transition-delay: 0.2s;
-        }
-
-        .car-term-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .car-term-btn-content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .car-term-number {
-            font-size: 24px;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-primary);
-            transition: color 0.3s ease;
-            line-height: 1;
-        }
-        
-        @media (max-width: 480px) {
-            .car-term-number {
-                font-size: 20px;
-            }
-        }
-
-        .car-term-label {
-            font-size: 11px;
+        .cat-tab-label {
+            font-size: 12px;
             font-weight: 600;
-            color: var(--text-muted);
-            transition: color 0.3s ease;
-            letter-spacing: 0.2px;
+            letter-spacing: 0.1px;
+            transition: all 0.35s var(--ease-out);
+            white-space: nowrap;
         }
-        
-        @media (max-width: 480px) {
-            .car-term-label {
-                font-size: 10px;
-            }
+        @media (max-width: 360px) {
+            .cat-tab-label { font-size: 11px; }
         }
 
-        .car-term-btn:active {
-            transform: scale(0.97);
+        .cat-tab.active {
+            background: var(--surface);
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
         }
-
-        .car-term-btn.active {
-            border-color: var(--primary);
-            box-shadow: 0 2px 8px rgba(64, 191, 149, 0.2);
-        }
-
-        .car-term-btn.active::before {
+        .cat-tab.active .cat-tab-icon {
             opacity: 1;
+            color: var(--primary);
+        }
+        .cat-tab.active .cat-tab-label {
+            color: var(--primary);
+            font-weight: 700;
         }
 
-        .car-term-btn.active .car-term-number,
-        .car-term-btn.active .car-term-label {
-            color: white;
+        @media (hover: hover) {
+            .cat-tab:not(.active):hover {
+                color: var(--text-secondary);
+                background: var(--surface-hover);
+            }
+            .cat-tab:not(.active):hover .cat-tab-icon { opacity: 0.7; }
         }
 
-        .category-slide.active .category-label {
-            color: white;
-        }
-
-        .category-slide.active img {
-            filter: brightness(1.2) grayscale(0);
-        }
-
-        /* Category indicators */
-        .category-indicators {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .category-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--border);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-        }
-
-        .category-indicator.active {
-            background: var(--primary);
-            width: 24px;
-            border-radius: 4px;
-        }
-
-        /* Phone modes */
+        /* === PHONE MODES === */
         .phone-modes {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 14px;
             overflow: hidden;
             max-height: 0;
             opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s var(--ease-out);
         }
-
         .phone-modes:not(.hidden) {
-            max-height: 100px;
+            max-height: 80px;
             opacity: 1;
-            transform: translateY(0);
         }
-
         .phone-modes.hidden {
-            max-height: 0;
-            opacity: 0;
-            transform: translateY(-10px);
-            margin-top: 0;
+            max-height: 0; opacity: 0; margin-top: 0;
         }
-        
         .phone-modes.full-width {
             grid-template-columns: 1fr;
         }
@@ -794,284 +427,316 @@
         .phone-mode {
             padding: 10px 12px;
             border-radius: var(--radius-sm);
-            border: 2px solid var(--border);
+            border: 1.5px solid var(--border);
             background: var(--surface);
             font-size: 12px;
             font-weight: 600;
             color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s var(--ease-out);
             text-align: center;
-            letter-spacing: -0.1px;
-            transform: scale(0.95);
-            opacity: 0;
+            font-family: inherit;
         }
-        
-        @media (max-width: 480px) {
-            .phone-mode {
-                padding: 8px 10px;
-                font-size: 11px;
-            }
-        }
-
-        .phone-mode:first-child {
-            transition-delay: 0.1s;
-        }
-
-        .phone-mode:last-child {
-            transition-delay: 0.15s;
-        }
-
-        .phone-modes:not(.hidden) .phone-mode {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .phone-mode:active {
-            transform: scale(0.97);
-        }
-
+        .phone-mode:active { transform: scale(0.97); }
         .phone-mode.active {
             border-color: var(--primary);
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: var(--primary);
             color: white;
-            box-shadow: 0 2px 8px rgba(64, 191, 149, 0.25);
+            box-shadow: var(--shadow-primary);
         }
-        
-        .phone-mode.hide-mode {
-            display: none;
+        .phone-mode.hide-mode { display: none; }
+
+        /* === CAR TERMS === */
+        .car-term-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 14px;
+            overflow: hidden;
+            max-height: 0; opacity: 0;
+            transition: all 0.5s var(--ease-out);
+        }
+        .car-term-selection:not(.hidden) {
+            max-height: 120px; opacity: 1;
+        }
+        .car-term-selection.hidden {
+            max-height: 0; opacity: 0; margin-top: 0;
         }
 
-        /* Range Slider */
-        .range-container {
-            padding: 8px 0;
+        .car-term-btn {
+            padding: 14px 10px;
+            border-radius: var(--radius-md);
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-family: inherit;
+        }
+        .car-term-btn:active { transform: scale(0.97); }
+
+        .car-term-number {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'IBM Plex Mono', monospace;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-primary);
+            transition: color 0.3s var(--ease-smooth);
+            line-height: 1;
+        }
+        .car-term-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: color 0.3s var(--ease-smooth);
         }
 
-        .range-wrapper {
-            position: relative;
-            padding: 12px 0;
+        .car-term-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            box-shadow: var(--shadow-primary);
         }
+        .car-term-btn.active .car-term-number,
+        .car-term-btn.active .car-term-label {
+            color: white;
+        }
+
+        /* === RANGE SLIDER === */
+        .range-container { padding: 4px 0; }
+        .range-wrapper { position: relative; padding: 14px 0; }
 
         input[type=range] {
             -webkit-appearance: none;
+            appearance: none;
             width: 100%;
             height: 6px;
             border-radius: 3px;
             outline: none;
             background: var(--border);
             cursor: pointer;
+            transition: background 0.2s var(--ease-smooth);
         }
-
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
+            width: 28px; height: 28px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: var(--primary);
             cursor: grab;
-            box-shadow: 0 2px 8px rgba(64, 191, 149, 0.4);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 10px rgba(14, 140, 106, 0.35), 0 0 0 4px rgba(14, 140, 106, 0.08);
+            transition: all 0.2s var(--ease-smooth);
+            border: 3px solid var(--surface);
         }
-
         input[type=range]::-webkit-slider-thumb:active {
             cursor: grabbing;
-            transform: scale(1.15);
+            transform: scale(1.12);
+            box-shadow: 0 2px 14px rgba(14, 140, 106, 0.45), 0 0 0 6px rgba(14, 140, 106, 0.12);
         }
-
         input[type=range]::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
+            width: 28px; height: 28px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: var(--primary);
             cursor: grab;
-            border: none;
-            box-shadow: 0 2px 8px rgba(64, 191, 149, 0.4);
+            border: 3px solid var(--surface);
+            box-shadow: 0 2px 10px rgba(14, 140, 106, 0.35);
         }
 
         .range-labels {
             display: flex;
             justify-content: space-between;
             margin-top: 8px;
-            font-size: 11px;
+            font-size: 12px;
             color: var(--text-muted);
             font-weight: 600;
         }
-
         .range-labels span {
             cursor: pointer;
-            padding: 4px 6px;
-            border-radius: 4px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            min-width: 24px;
-            text-align: center;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s var(--ease-smooth);
+            user-select: none;
         }
-
-        .range-labels span:active {
-            transform: scale(0.95);
+        .range-labels span:hover {
             background: var(--surface-hover);
             color: var(--primary);
         }
+        .range-labels span:active {
+            transform: scale(0.93);
+        }
 
-        .term-value {
+        .term-badge {
             text-align: center;
-            margin-top: 10px;
-            font-size: 16px;
+            margin-top: 12px;
+            font-size: 15px;
             font-weight: 700;
-            color: var(--primary-dark);
-            padding: 8px;
-            background: var(--surface-hover);
+            color: var(--primary);
+            padding: 10px 16px;
+            background: var(--primary-glow);
             border-radius: var(--radius-sm);
+            border: 1px solid rgba(14, 140, 106, 0.12);
+            letter-spacing: -0.2px;
         }
 
-        [data-theme="dark"] .term-value {
-            color: var(--primary-light);
-        }
-
-        /* Min down hint */
-        .min-down-hint {
+        /* === MIN DOWN HINT === */
+        .min-down-chip {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            margin-top: 8px;
-            padding: 8px 12px;
-            border-radius: var(--radius-sm);
-            background: var(--surface-hover);
-            border: 2px solid var(--border);
+            margin-top: 10px;
+            padding: 8px 14px;
+            border-radius: var(--radius-full);
+            background: var(--bg);
+            border: 1.5px solid var(--border);
             font-size: 12px;
             color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s var(--ease-smooth);
             font-weight: 600;
+            font-family: inherit;
         }
-
-        .min-down-hint:active {
-            transform: scale(0.97);
+        .min-down-chip:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-glow);
+        }
+        .min-down-chip:active {
+            transform: scale(0.96);
             background: var(--primary);
             color: white;
             border-color: var(--primary);
         }
-
-        .min-down-hint svg {
-            width: 14px;
-            height: 14px;
+        .min-down-chip svg {
+            width: 14px; height: 14px;
+            flex-shrink: 0;
         }
 
-        /* Results - Compact & Card Style */
-        .results {
+        /* === RESULTS HERO === */
+        .results-card {
             background: var(--surface);
             border-radius: var(--radius-lg);
-            overflow: hidden;
+            border: 1px solid var(--border);
             box-shadow: var(--shadow-md);
-            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            animation-delay: 0.2s;
-            animation-fill-mode: both;
+            overflow: hidden;
             margin-bottom: 16px;
-            border: 2px solid var(--border);
+            transition: all 0.4s var(--ease-smooth);
         }
-        
-        @media (max-width: 480px) {
-            .results {
-                margin-bottom: 10px;
-            }
+        @media (min-width: 641px) {
+            .results-card { border-radius: var(--radius-xl); margin-bottom: 20px; }
         }
 
-        .monthly-block {
-            padding: 20px 16px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        .hero-payment {
+            padding: 28px 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 60%, #064E3B 100%);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-payment::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -30%;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-payment::after {
+            content: '';
+            position: absolute;
+            bottom: -40%; left: -20%;
+            width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+            border-radius: 50%;
         }
 
-        .monthly-label {
+        .hero-label {
             font-size: 11px;
             font-weight: 700;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-value {
+            font-size: 38px;
+            font-weight: 700;
+            font-family: 'IBM Plex Mono', monospace;
+            font-variant-numeric: tabular-nums;
+            color: white;
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.5px;
+        }
+        @media (max-width: 380px) {
+            .hero-value { font-size: 32px; }
+        }
+        .hero-sub {
+            font-size: 13px;
+            color: rgba(255,255,255,0.65);
+            margin-top: 8px;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Results grid */
+        .results-body {
+            padding: 0;
+        }
+        .results-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--divider);
+        }
+        .results-row:last-child { border-bottom: none; }
+
+        .results-row .r-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .results-row .r-value {
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'IBM Plex Mono', monospace;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-primary);
+            letter-spacing: -0.2px;
+        }
+
+        .results-row.total {
+            background: var(--bg-subtle);
+            padding: 16px 20px;
+        }
+        .results-row.total .r-label {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-primary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
-        .monthly-value {
-            font-size: 32px;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-            color: white;
-            margin: 4px 0;
-        }
-        
-        @media (max-width: 480px) {
-            .monthly-value {
-                font-size: 28px;
-            }
-        }
-
-        .monthly-sub {
-            font-size: 12px;
-            color: rgba(255,255,255,0.75);
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: var(--border);
-        }
-
-        .result-cell {
-            background: var(--surface);
-            padding: 12px 8px;
-            text-align: center;
-        }
-
-        .result-cell .lbl {
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .result-cell .val {
-            font-size: 14px;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-primary);
-        }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 16px;
-            background: var(--surface-hover);
-        }
-
-        .total-row .lbl {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-        }
-
-        .total-row .val {
+        .results-row.total .r-value {
             font-size: 18px;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-primary);
+            font-weight: 700;
         }
 
-        /* WhatsApp Button */
-        .wa-button-wrapper {
-            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            animation-delay: 0.3s;
-            animation-fill-mode: both;
-        }
+        /* === WHATSAPP BUTTON === */
+        .wa-section { margin-bottom: 0; }
 
-        .wa-button {
+        .wa-btn {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             width: 100%;
-            padding: 16px 28px;
-            border-radius: var(--radius-md);
+            padding: 16px 24px;
+            border-radius: var(--radius-lg);
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             color: white;
             font-size: 16px;
@@ -1079,335 +744,246 @@
             text-decoration: none;
             border: none;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 16px rgba(37, 211, 102, 0.35);
+            transition: all 0.3s var(--ease-smooth);
+            box-shadow: var(--shadow-wa);
+            font-family: inherit;
+            letter-spacing: -0.2px;
             position: relative;
             overflow: hidden;
-            letter-spacing: -0.2px;
         }
-        
-        @media (max-width: 480px) {
-            .wa-button {
-                padding: 14px 20px;
-                font-size: 15px;
-                gap: 8px;
-            }
+        .wa-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
         }
+        .wa-btn:active { transform: scale(0.98); }
+        .wa-btn svg { width: 22px; height: 22px; fill: white; flex-shrink: 0; }
 
-        .wa-button:active {
-            transform: scale(0.98);
-        }
-
-        .wa-button img {
-            width: 24px;
-            height: 24px;
-        }
-
-        .wa-tooltip {
+        .wa-hint {
             text-align: center;
             margin-top: 10px;
             font-size: 12px;
             color: var(--text-muted);
-            line-height: 1.4;
+            font-weight: 500;
         }
 
-        /* Animations */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
+        /* === FOOTER === */
+        .footer {
+            text-align: center;
+            padding: 28px 16px 16px;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer a:hover { text-decoration: underline; }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* === ANIMATIONS === */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .anim-1 { animation: fadeIn 0.6s var(--ease-out) 0.05s both; }
+        .anim-2 { animation: fadeIn 0.6s var(--ease-out) 0.12s both; }
+        .anim-3 { animation: fadeIn 0.6s var(--ease-out) 0.2s both; }
+        .anim-4 { animation: fadeIn 0.6s var(--ease-out) 0.28s both; }
+
+        .haptic { animation: hapticPulse 0.15s var(--ease-smooth); }
+        @keyframes hapticPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.97); }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(0.97);
-            }
-        }
-
-        .haptic {
-            animation: pulse 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Mobile Optimizations */
-        @media (max-width: 640px) {
-            body {
-                padding: 12px;
-            }
-
-            .header img {
-                width: 100px;
-            }
-
-            .header h1 {
-                font-size: 20px;
-            }
-
-            .card {
-                padding: 16px;
-            }
-
-            input[type=text] {
-                font-size: 18px;
-                padding: 12px 14px;
-            }
-
-            .category-slide {
-                padding: 16px;
-            }
-
-            .category-slide img {
-                width: 40px;
-                height: 40px;
-            }
-
-            .category-label {
-                font-size: 14px;
-            }
-        }
-
-        /* Larger screens */
-        @media (min-width: 641px) {
-            body {
-                padding: 24px;
-            }
-
-            .container {
-                max-width: 480px;
-            }
-
-            .header {
-                margin-bottom: 32px;
-            }
-
-            .card {
-                padding: 24px;
-            }
-        }
-
-        /* Focus visible for accessibility */
+        /* === ACCESSIBILITY === */
         *:focus-visible {
             outline: 2px solid var(--primary);
             outline-offset: 2px;
         }
-
-        /* Reduce motion for accessibility */
         @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
+            *, *::before, *::after {
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
             }
         }
+
+        /* === VALUE TRANSITION === */
+        .val-animate {
+            transition: transform 0.2s var(--ease-spring);
+        }
+        .val-animate.bump {
+            transform: scale(1.04);
+        }
     </style>
 </head>
 
 <body>
-    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
-        <svg class="sun-icon" viewBox="0 0 24 24">
-            <path
-                d="M12 17.5C14.7614 17.5 17 15.2614 17 12.5C17 9.73858 14.7614 7.5 12 7.5C9.23858 7.5 7 9.73858 7 12.5C7 15.2614 9.23858 17.5 12 17.5Z" />
-            <path
-                d="M12 1.5V3.5M12 21.5V23.5M4.22 4.72L5.64 6.14M18.36 18.86L19.78 20.28M1.5 12.5H3.5M20.5 12.5H22.5M4.22 20.28L5.64 18.86M18.36 6.14L19.78 4.72"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-        </svg>
-        <svg class="moon-icon" viewBox="0 0 24 24">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-        </svg>
-    </button>
+    <div class="bg-decor"></div>
+    <div class="bg-grain"></div>
 
-    <button class="sound-toggle" id="soundToggle" aria-label="Переключить звук">
-        <svg class="sound-on-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M11 5L6 9H2v6h4l5 4V5z" />
-            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-        </svg>
-        <svg class="sound-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M11 5L6 9H2v6h4l5 4V5z" />
-            <line x1="23" y1="9" x2="17" y2="15" />
-            <line x1="17" y1="9" x2="23" y2="15" />
-        </svg>
-    </button>
-
-    <div class="container">
-        <div class="header">
-            <img src="logo.png" alt="Hambo">
-            <h1>Калькулятор рассрочки</h1>
-        </div>
-
-        <div class="card">
-            <div class="section">
-                <label>Стоимость товара:</label>
-                <div class="input-wrapper">
-                    <input type="text" id="price" placeholder="0 ₽" inputmode="numeric">
-                </div>
-            </div>
-
-            <div class="section">
-                <label>Категория товара</label>
-                <div class="category-carousel">
-                    <!-- Left arrow -->
-                    <div class="category-nav-arrow left">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-                        </svg>
-                    </div>
-                    <!-- Right arrow -->
-                    <div class="category-nav-arrow right">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-                        </svg>
-                    </div>
-                    <div class="category-track" id="categoryTrack">
-                        <div class="category-slide" data-cat="1">
-                            <div class="category-content">
-                                <img src="icon-phone.png" alt="Телефоны" class="cat-icon">
-                                <span class="category-label">Телефоны</span>
-                            </div>
-                        </div>
-                        <div class="category-slide" data-cat="3">
-                            <div class="category-content">
-                                <img src="icon-car.png" alt="Автомобили" class="cat-icon">
-                                <span class="category-label">Автомобили</span>
-                            </div>
-                        </div>
-                        <div class="category-slide active" data-cat="2">
-                            <div class="category-content">
-                                <img src="icon-box.png" alt="Другие товары" class="cat-icon">
-                                <span class="category-label">Другие товары</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="category-indicators" id="categoryIndicators">
-                    <div class="category-indicator" data-index="0"></div>
-                    <div class="category-indicator" data-index="1"></div>
-                    <div class="category-indicator active" data-index="2"></div>
-                </div>
-                
-                <div class="phone-modes hidden" id="phoneModes">
-                    <div class="phone-mode active" data-mode="minDown">Минимальный взнос</div>
-                    <div class="phone-mode" data-mode="minMarkup">Минимальная наценка</div>
-                </div>
-
-                <div class="car-term-selection hidden" id="carTermSelection">
-                    <div class="car-term-btn active" data-term="12">
-                        <div class="car-term-btn-content">
-                            <span class="car-term-number">12</span>
-                            <span class="car-term-label">платежей</span>
-                        </div>
-                    </div>
-                    <div class="car-term-btn" data-term="18">
-                        <div class="car-term-btn-content">
-                            <span class="car-term-number">18</span>
-                            <span class="car-term-label">платежей</span>
-                        </div>
-                    </div>
-                    <div class="car-term-btn" data-term="24">
-                        <div class="car-term-btn-content">
-                            <span class="car-term-number">24</span>
-                            <span class="car-term-label">платежа</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="section" id="termSection">
-                <label>Количество платежей:</label>
-                <div class="range-container">
-                    <div class="range-wrapper">
-                        <input type="range" id="term" min="3" max="13" value="6">
-                    </div>
-                    <div class="range-labels" id="rangeLabels">
-                        <span>3</span>
-                        <span>5</span>
-                        <span>8</span>
-                        <span>11</span>
-                        <span>13</span>
-                    </div>
-                    <div class="term-value" id="termLabel"></div>
-                </div>
-            </div>
-
-            <div class="section">
-                <label>Первоначальный взнос:</label>
-                <div class="input-wrapper">
-                    <input type="text" id="down" placeholder="0 ₽" inputmode="numeric">
-                </div>
-                <div class="min-down-hint" id="minDown">
-                    <svg fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                        <path
-                            d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                    </svg>
-                    <span id="minDownText">Минимум</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="results">
-            <div class="monthly-block">
-                <div class="monthly-label">Ежемесячный платеж:</div>
-                <div class="monthly-value" id="monthlyValue">0 ₽</div>
-            </div>
-            <div class="results-grid">
-                <div class="result-cell">
-                    <div class="lbl">Взнос</div>
-                    <div class="val" id="downValue">0 ₽</div>
-                </div>
-                <div class="result-cell">
-                    <div class="lbl">Остаток</div>
-                    <div class="val" id="restValue">0 ₽</div>
-                </div>
-                <div class="result-cell">
-                    <div class="lbl">Платежей</div>
-                    <div class="val" id="paymentsCount">0</div>
-                </div>
-            </div>
-            <div class="total-row">
-                <span class="lbl">Итого:</span>
-                <span class="val" id="totalValue">0 ₽</span>
-            </div>
-        </div>
-
-        <div class="wa-button-wrapper">
-            <a href="https://wa.me/79298533232" target="_blank" class="wa-button" id="waBtn">
-                <img src="whatsapp-icon.png" alt="WhatsApp">
-                <span id="waBtnText">Отправить в WhatsApp</span>
+    <div class="app">
+        <!-- TOP BAR -->
+        <div class="topbar anim-1">
+            <a href="https://hambo95.ru" class="topbar-logo">
+                <img src="logo.png" alt="HamBo">
             </a>
-            <div class="wa-tooltip">
-                Отправьте расчёт менеджеру для оформления
+            <div class="topbar-controls">
+                <button class="icon-btn" id="soundToggle" aria-label="Переключить звук">
+                    <svg class="sound-on stroke-icon" viewBox="0 0 24 24">
+                        <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                    </svg>
+                    <svg class="sound-off stroke-icon" viewBox="0 0 24 24">
+                        <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                        <line x1="23" y1="9" x2="17" y2="15"/>
+                        <line x1="17" y1="9" x2="23" y2="15"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="themeToggle" aria-label="Переключить тему">
+                    <svg class="sun-icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
             </div>
+        </div>
+
+        <!-- TITLE -->
+        <h1 class="page-title anim-1">Калькулятор рассрочки</h1>
+
+        <!-- INPUT CARD -->
+        <div class="card anim-2">
+            <div class="card-inner">
+                <!-- PRICE -->
+                <div class="field-group">
+                    <label class="field-label">Стоимость товара</label>
+                    <input type="text" class="text-input" id="price" placeholder="0 ₽" inputmode="numeric">
+                </div>
+
+                <!-- CATEGORY -->
+                <div class="field-group">
+                    <label class="field-label">Категория</label>
+                    <div class="category-tabs" id="categoryTabs">
+                        <button class="cat-tab" data-cat="1">
+                            <div class="cat-tab-icon">
+                                <svg viewBox="0 0 24 24"><rect x="5" y="1" width="14" height="22" rx="3" ry="3" fill="none" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="18" x2="12" y2="18.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+                            </div>
+                            <span class="cat-tab-label">Телефоны</span>
+                        </button>
+                        <button class="cat-tab" data-cat="3">
+                            <div class="cat-tab-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17a2 2 0 100-4 2 2 0 000 4zM17 17a2 2 0 100-4 2 2 0 000 4z"/><path d="M5 15H3v-2a1 1 0 011-1h1l2-4h6l3 4h3a2 2 0 012 2v1h-2"/><path d="M9 15h6"/></svg>
+                            </div>
+                            <span class="cat-tab-label">Авто</span>
+                        </button>
+                        <button class="cat-tab active" data-cat="2">
+                            <div class="cat-tab-icon">
+                                <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" fill="none" stroke="currentColor" stroke-width="1.8"/><polyline points="3.27 6.96 12 12.01 20.73 6.96" fill="none" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="22.08" x2="12" y2="12" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                            </div>
+                            <span class="cat-tab-label">Другое</span>
+                        </button>
+                    </div>
+
+                    <div class="phone-modes hidden" id="phoneModes">
+                        <div class="phone-mode active" data-mode="minDown">Минимальный взнос</div>
+                        <div class="phone-mode" data-mode="minMarkup">Минимальная наценка</div>
+                    </div>
+
+                    <div class="car-term-selection hidden" id="carTermSelection">
+                        <div class="car-term-btn active" data-term="12">
+                            <span class="car-term-number">12</span>
+                            <span class="car-term-label">месяцев</span>
+                        </div>
+                        <div class="car-term-btn" data-term="18">
+                            <span class="car-term-number">18</span>
+                            <span class="car-term-label">месяцев</span>
+                        </div>
+                        <div class="car-term-btn" data-term="24">
+                            <span class="car-term-number">24</span>
+                            <span class="car-term-label">месяца</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TERM SLIDER -->
+                <div class="field-group" id="termSection">
+                    <label class="field-label">Количество платежей</label>
+                    <div class="range-container">
+                        <div class="range-wrapper">
+                            <input type="range" id="term" min="3" max="13" value="6">
+                        </div>
+                        <div class="range-labels" id="rangeLabels">
+                            <span>3</span><span>5</span><span>8</span><span>11</span><span>13</span>
+                        </div>
+                        <div class="term-badge" id="termLabel"></div>
+                    </div>
+                </div>
+
+                <!-- DOWN PAYMENT -->
+                <div class="field-group">
+                    <label class="field-label">Первоначальный взнос</label>
+                    <input type="text" class="text-input" id="down" placeholder="0 ₽" inputmode="numeric">
+                    <div class="min-down-chip" id="minDown">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                        </svg>
+                        <span id="minDownText">Минимум</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTS -->
+        <div class="results-card anim-3">
+            <div class="hero-payment">
+                <div class="hero-label">Ежемесячный платёж</div>
+                <div class="hero-value val-animate" id="monthlyValue">0 ₽</div>
+                <div class="hero-sub">× <span id="paymentsCount">0</span> <span id="paymentsWord">платежей</span></div>
+            </div>
+            <div class="results-body">
+                <div class="results-row">
+                    <span class="r-label">Взнос</span>
+                    <span class="r-value val-animate" id="downValue">0 ₽</span>
+                </div>
+                <div class="results-row">
+                    <span class="r-label">Остаток</span>
+                    <span class="r-value val-animate" id="restValue">0 ₽</span>
+                </div>
+                <div class="results-row total">
+                    <span class="r-label">Итого</span>
+                    <span class="r-value val-animate" id="totalValue">0 ₽</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- WHATSAPP -->
+        <div class="wa-section anim-4">
+            <a href="https://wa.me/79298533232" target="_blank" class="wa-btn" id="waBtn">
+                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span>Отправить в WhatsApp</span>
+            </a>
+            <div class="wa-hint">Отправьте расчёт менеджеру для оформления</div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>© 2026 HamBo • <a href="https://hambo95.ru">hambo95.ru</a></p>
         </div>
     </div>
 
     <script>
-        /* ===== MODERN iOS-STYLE AUDIO SYSTEM ===== */
+        /* ===== AUDIO SYSTEM ===== */
         let audioCtx;
         let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
 
@@ -1421,75 +997,35 @@
 
         function playSound(type = 'click') {
             if (!soundEnabled || !audioCtx) return;
-
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
 
             const now = audioCtx.currentTime;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
 
             const profiles = {
-                click: {
-                    freq: 1200,
-                    type: 'sine',
-                    duration: 0.04,
-                    volume: 0.15,
-                    envelope: { attack: 0.001, decay: 0.039 }
-                },
-                slider: {
-                    freq: 800,
-                    type: 'sine',
-                    duration: 0.03,
-                    volume: 0.08,
-                    envelope: { attack: 0.001, decay: 0.029 }
-                },
-                success: {
-                    freq: 1400,
-                    type: 'sine',
-                    duration: 0.08,
-                    volume: 0.12,
-                    envelope: { attack: 0.002, decay: 0.078 }
-                },
-                toggle: {
-                    freq: 1000,
-                    type: 'sine',
-                    duration: 0.05,
-                    volume: 0.13,
-                    envelope: { attack: 0.001, decay: 0.049 }
-                },
-                swipe: {
-                    freq: 900,
-                    type: 'sine',
-                    duration: 0.06,
-                    volume: 0.1,
-                    envelope: { attack: 0.001, decay: 0.059 }
-                }
+                click: { freq: 1200, type: 'sine', duration: 0.04, volume: 0.15, envelope: { attack: 0.001, decay: 0.039 } },
+                slider: { freq: 800, type: 'sine', duration: 0.03, volume: 0.08, envelope: { attack: 0.001, decay: 0.029 } },
+                success: { freq: 1400, type: 'sine', duration: 0.08, volume: 0.12, envelope: { attack: 0.002, decay: 0.078 } },
+                toggle: { freq: 1000, type: 'sine', duration: 0.05, volume: 0.13, envelope: { attack: 0.001, decay: 0.049 } },
+                swipe: { freq: 900, type: 'sine', duration: 0.06, volume: 0.1, envelope: { attack: 0.001, decay: 0.059 } }
             };
 
             const profile = profiles[type] || profiles.click;
-
             osc.type = profile.type;
             osc.frequency.value = profile.freq;
-
             gain.gain.setValueAtTime(0, now);
             gain.gain.linearRampToValueAtTime(profile.volume, now + profile.envelope.attack);
             gain.gain.exponentialRampToValueAtTime(0.001, now + profile.envelope.decay);
-
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-
             osc.start(now);
             osc.stop(now + profile.duration);
         }
 
         function playSliderSound(value) {
             if (!soundEnabled || !audioCtx) return;
-
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
 
             const now = audioCtx.currentTime;
             const osc = audioCtx.createOscillator();
@@ -1501,14 +1037,11 @@
 
             osc.type = 'sine';
             osc.frequency.value = freq;
-
             gain.gain.setValueAtTime(0, now);
             gain.gain.linearRampToValueAtTime(0.06, now + 0.001);
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
-
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-
             osc.start(now);
             osc.stop(now + 0.03);
         }
@@ -1521,114 +1054,45 @@
         }
 
         function feedback(el = null, soundType = 'click') {
-            if (!audioCtx) {
-                initAudio();
-            }
+            if (!audioCtx) initAudio();
             playSound(soundType);
             if (el) visualHaptic(el);
         }
 
-        /* TABLES - ТЕЛЕФОНЫ */
+        function bumpValue(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.remove('bump');
+            void el.offsetWidth;
+            el.classList.add('bump');
+            setTimeout(() => el.classList.remove('bump'), 200);
+        }
+
+        /* ===== TABLES ===== */
         const phonePrice = { 4: 0.15, 5: .18, 6: .25, 7: .2917, 8: .3333, 9: .375, 10: .4167, 11: .4583, 12: .5 };
-        const phoneRest = { 4: .2, 5: .24, 6: .3158, 7: .357, 8: .4, 9: .4426, 10: .4855, 11: .5285, 12: .5714 };
-        const phonePriceAlt = { 4: 0.15, 5: 0.18, 6: 0.21, 7: 0.2442, 8: 0.2783, 9: 0.3125, 10: 0.3467, 11: 0.3808, 12: 0.415 };
-        const phoneRestAlt = { 4: 0.2, 5: 0.233333333, 6: 0.28, 7: 0.3112, 8: 0.3556, 9: 0.4, 10: 0.444533333, 11: 0.488933333, 12: 0.533333333 };
+        const phoneRest = { 4: .2, 5: .25, 6: .3158, 7: .357, 8: .4, 9: .4426, 10: .4855, 11: .5285, 12: .5714 };
+        const phonePriceAlt = { 4: 0.15, 5: 0.18, 6: 0.2, 7: 0.225, 8: 0.25, 9: 0.275, 10: 0.30, 11: 0.325, 12: 0.35 };
+        const phoneRestAlt = { 4: 0.203, 5: 0.252, 6: 0.286, 7: 0.322, 8: 0.3572, 9: 0.393, 10: 0.42857, 11: 0.465, 12: 0.5 };
 
-        /* TABLES - ДРУГИЕ ТОВАРЫ */
-        const allPrice = {
-            3: 0.1075,
-            4: 0.1417,
-            5: 0.1758,
-            6: 0.21,
-            7: 0.2442,
-            8: 0.2783,
-            9: 0.3125,
-            10: 0.3467,
-            11: 0.3808,
-            12: 0.415,
-            13: 0.4492
-        };
+        const allPrice = { 3: 0.1075, 4: 0.1417, 5: 0.1758, 6: 0.21, 7: 0.2442, 8: 0.2783, 9: 0.3125, 10: 0.3467, 11: 0.3808, 12: 0.415, 13: 0.4492 };
+        const allRest = { 3: 0.1434, 4: 0.188986667, 5: 0.2344, 6: 0.28, 7: 0.3256, 8: 0.371066667, 9: 0.416666667, 10: 0.462266667, 11: 0.507733333, 12: 0.553333333, 13: 0.5992 };
+        const allPrice150t = { 3: 0.095, 4: 0.1233, 5: 0.1517, 6: 0.18, 7: 0.2083, 8: 0.2367, 9: 0.265, 10: 0.2933, 11: 0.3217, 12: 0.35, 13: 0.3783 };
+        const allRest150t = { 3: 0.1266, 4: 0.1644, 5: 0.202266667, 6: 0.24, 7: 0.277733333, 8: 0.3156, 9: 0.353333333, 10: 0.391066667, 11: 0.428933333, 12: 0.466666667, 13: 0.5044 };
 
-        const allRest = {
-            3: 0.1434,
-            4: 0.188986667,
-            5: 0.2344,
-            6: 0.28,
-            7: 0.3256,
-            8: 0.371066667,
-            9: 0.416666667,
-            10: 0.462266667,
-            11: 0.507733333,
-            12: 0.553333333,
-            13: 0.5992
-        };
-
-        const allPrice150t = {
-            3: 0.095,
-            4: 0.1233,
-            5: 0.1517,
-            6: 0.18,
-            7: 0.2083,
-            8: 0.2367,
-            9: 0.265,
-            10: 0.2933,
-            11: 0.3217,
-            12: 0.35,
-            13: 0.3783
-        };
-
-        const allRest150t = {
-            3: 0.1266,
-            4: 0.1644,
-            5: 0.202266667,
-            6: 0.24,
-            7: 0.277733333,
-            8: 0.3156,
-            9: 0.353333333,
-            10: 0.391066667,
-            11: 0.428933333,
-            12: 0.466666667,
-            13: 0.5044
-        };
-
-        /* TABLES - АВТОМОБИЛИ */
-        // Для автомобилей стоимостью < 1 000 000 ₽
-        const carPriceLow = {
-            12: 0.30,
-            18: 0.45,
-            24: 0.60
-        };
-
-        const carRestLow = {
-            12: 0.444444444,
-            18: 0.666666667,
-            24: 0.888888889
-        };
-
-        // Для автомобилей стоимостью >= 1 000 000 ₽
-        const carPriceHigh = {
-            12: 0.275,
-            18: 0.415,
-            24: 0.552
-        };
-
-        const carRestHigh = {
-            12: 0.403669725,
-            18: 0.609174312,
-            24: 0.810275229
-        };
+        const carPriceLow = { 12: 0.30, 18: 0.45, 24: 0.60 };
+        const carRestLow = { 12: 0.444444444, 18: 0.666666667, 24: 0.888888889 };
+        const carPriceHigh = { 12: 0.275, 18: 0.415, 24: 0.552 };
+        const carRestHigh = { 12: 0.403669725, 18: 0.609174312, 24: 0.810275229 };
 
         const MIN_PRICE = 10000;
 
-        // Загружаем сохраненные данные или используем значения по умолчанию
-        let phoneMode = localStorage.getItem('phoneMode') || 'minDown';
-        let category = parseInt(localStorage.getItem('category')) || 2;
+        let phoneMode = localStorage.getItem('phoneMode') || 'minMarkup';
+        let category = parseInt(localStorage.getItem('category')) || 1;
         let lastTerm = parseInt(localStorage.getItem('lastTerm')) || 6;
         let carTerm = parseInt(localStorage.getItem('carTerm')) || 12;
         let userTouchedDown = localStorage.getItem('userTouchedDown') === 'true';
         let lastResult = {};
 
-        /* helpers */
         const digits = v => v.replace(/\D/g, '');
         const bank = v => (Math.ceil(v / 100) * 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
 
@@ -1642,6 +1106,7 @@
         const monthlyValue = document.getElementById('monthlyValue');
         const totalValue = document.getElementById('totalValue');
         const paymentsCount = document.getElementById('paymentsCount');
+        const paymentsWord = document.getElementById('paymentsWord');
         const minDownDiv = document.getElementById('minDown');
         const minDownText = document.getElementById('minDownText');
         const html = document.documentElement;
@@ -1658,10 +1123,7 @@
             });
 
             el.addEventListener('keydown', e => {
-                if (e.key === 'Escape') {
-                    el.value = original;
-                    el.blur();
-                }
+                if (e.key === 'Escape') { el.value = original; el.blur(); }
                 if (e.key === 'Enter') el.blur();
             });
 
@@ -1669,22 +1131,17 @@
                 editing = true;
                 const cursorPos = el.selectionStart;
                 const oldLength = el.value.length;
-
                 const digitsOnly = digits(el.value);
                 const formatted = digitsOnly.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-
                 el.value = formatted;
-
                 const newLength = formatted.length;
                 const lengthDiff = newLength - oldLength;
                 const newCursorPos = cursorPos + lengthDiff;
-
                 if (formatted[newCursorPos - 1] === ' ') {
                     el.setSelectionRange(newCursorPos + 1, newCursorPos + 1);
                 } else {
                     el.setSelectionRange(newCursorPos, newCursorPos);
                 }
-
                 if (isDown) {
                     userTouchedDown = true;
                     localStorage.setItem('userTouchedDown', 'true');
@@ -1692,301 +1149,202 @@
             });
 
             el.addEventListener('blur', () => {
-                if (!editing) {
-                    el.value = original;
-                    return;
-                }
-
+                if (!editing) { el.value = original; return; }
                 let value = Number(digits(el.value)) || 0;
-
-                if (!isDown && value < MIN_PRICE) {
-                    value = MIN_PRICE;
-                }
-
+                if (!isDown && value < MIN_PRICE) value = MIN_PRICE;
                 if (isDown) {
                     const price = Number(digits(priceInput.value)) || 0;
-                    if (value > price) {
-                        value = price;
-                    }
+                    if (value > price) value = price;
                 }
-
                 el.value = bank(value);
-                
                 if (!isDown) {
                     localStorage.setItem('price', value);
                 } else {
                     localStorage.setItem('down', value);
                 }
-                
                 calc();
             });
         }
         bindMoneyInput(priceInput);
         bindMoneyInput(downInput, true);
 
-        /* UPDATE CATEGORY ICONS */
-        function updateCategoryIcons() {
-            const isDark = html.getAttribute('data-theme') === 'dark';
+        /* CATEGORY TABS */
+        document.querySelectorAll('.cat-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                feedback(tab, 'swipe');
+                document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                category = parseInt(tab.dataset.cat);
+                userTouchedDown = false;
+                localStorage.setItem('category', category);
+                localStorage.setItem('userTouchedDown', 'false');
+                updateRangeLabels();
+                updatePhoneModesVisibility();
+                calc();
+            });
+        });
 
-            document.querySelectorAll('.category-slide').forEach(slide => {
-                const img = slide.querySelector('.cat-icon');
-                const isActive = slide.classList.contains('active');
-                const cat = slide.dataset.cat;
+        /* SLIDER */
+        function updateSlider() {
+            const min = +termInput.min;
+            const max = +termInput.max;
+            const val = +termInput.value;
+            const percent = (val - min) / (max - min);
+            termInput.style.background = `linear-gradient(to right, var(--primary) 0%, var(--primary) ${percent * 100}%, var(--border) ${percent * 100}%, var(--border) 100%)`;
+        }
 
-                if (isDark && !isActive) {
-                    if (cat === '1') {
-                        img.src = 'icon-phone-dark.png';
-                    } else if (cat === '2') {
-                        img.src = 'icon-box-dark.png';
-                    } else if (cat === '3') {
-                        img.src = 'icon-car-dark.png';
-                    }
-                } else {
-                    if (cat === '1') {
-                        img.src = 'icon-phone.png';
-                    } else if (cat === '2') {
-                        img.src = 'icon-box.png';
-                    } else if (cat === '3') {
-                        img.src = 'icon-car.png';
-                    }
+        termInput.addEventListener('input', () => {
+            const oldTerm = lastTerm;
+            lastTerm = +termInput.value;
+            if (category === 1) {
+                const wasSpecial = (oldTerm === 4 || oldTerm === 5);
+                const isSpecial = (lastTerm === 4 || lastTerm === 5);
+                if (wasSpecial !== isSpecial) {
+                    userTouchedDown = false;
+                    localStorage.setItem('userTouchedDown', 'false');
                 }
-            });
-        }
-
-        /* CATEGORY CAROUSEL */
-        const categoryTrack = document.getElementById('categoryTrack');
-        const categoryIndicators = document.getElementById('categoryIndicators');
-        
-        // Mapping between visual index and category number
-        // Visual order: Телефоны(1), Автомобили(3), Другие товары(2)
-        const indexToCat = [1, 3, 2];
-        const catToIndex = { 1: 0, 3: 1, 2: 2 };
-        
-        let currentCategoryIndex = catToIndex[category] || 2; // Default to "Другие товары"
-        let startX = 0;
-        let currentX = 0;
-        let isDragging = false;
-        let dragDistance = 0;
-
-        function updateCategoryCarousel(animate = true) {
-            const offset = -currentCategoryIndex * 100;
-            if (animate) {
-                categoryTrack.classList.remove('dragging');
-            } else {
-                categoryTrack.classList.add('dragging');
             }
-            categoryTrack.style.transform = `translateX(${offset}%)`;
-
-            // Update active states
-            document.querySelectorAll('.category-slide').forEach((slide, index) => {
-                slide.classList.toggle('active', index === currentCategoryIndex);
-            });
-
-            document.querySelectorAll('.category-indicator').forEach((indicator, index) => {
-                indicator.classList.toggle('active', index === currentCategoryIndex);
-            });
-
-            updateCategoryIcons();
-        }
-
-        function handleCategoryChange() {
-            category = indexToCat[currentCategoryIndex];
-            userTouchedDown = false;
-            
-            localStorage.setItem('category', category);
-            localStorage.setItem('userTouchedDown', 'false');
-
-            updateRangeLabels();
+            localStorage.setItem('lastTerm', lastTerm);
+            updateSlider();
             updatePhoneModesVisibility();
             calc();
-            feedback(null, 'swipe');
+            playSliderSound(lastTerm);
+        });
+
+        /* Phone modes */
+        document.querySelectorAll('.phone-mode').forEach(btn => {
+            btn.addEventListener('click', () => {
+                feedback(btn);
+                document.querySelectorAll('.phone-mode').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                phoneMode = btn.dataset.mode;
+                userTouchedDown = false;
+                localStorage.setItem('phoneMode', phoneMode);
+                localStorage.setItem('userTouchedDown', 'false');
+                calc();
+            });
+        });
+
+        /* Car term */
+        document.querySelectorAll('.car-term-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                feedback(btn);
+                document.querySelectorAll('.car-term-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                carTerm = parseInt(btn.dataset.term);
+                userTouchedDown = false;
+                localStorage.setItem('carTerm', carTerm);
+                localStorage.setItem('userTouchedDown', 'false');
+                calc();
+            });
+        });
+
+        /* Min down click */
+        minDownDiv.addEventListener('click', () => {
+            feedback(minDownDiv);
+            const v = digits(minDownText.innerText);
+            if (!v) return;
+            userTouchedDown = true;
+            localStorage.setItem('userTouchedDown', 'true');
+            const minDownValue = Number(v);
+            downInput.value = bank(minDownValue);
+            localStorage.setItem('down', minDownValue);
+            downInput.focus();
+            downInput.blur();
+            calc();
+        });
+
+        /* WhatsApp */
+        const waBtn = document.getElementById('waBtn');
+        if (waBtn) {
+            waBtn.addEventListener('click', e => {
+                feedback(waBtn, 'success');
+                const text = buildWhatsAppText();
+                const encoded = encodeURIComponent(text);
+                waBtn.href = `https://wa.me/79298533232?text=${encoded}`;
+            });
         }
 
-        // Touch events
-        categoryTrack.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            currentX = startX;
-            isDragging = false;
-            dragDistance = 0;
-            categoryTrack.classList.add('dragging');
-        });
-
-        categoryTrack.addEventListener('touchmove', (e) => {
-            isDragging = true;
-            currentX = e.touches[0].clientX;
-            dragDistance = Math.abs(currentX - startX);
-            
-            if (dragDistance > 5) {
-                const diff = currentX - startX;
-                const offset = -currentCategoryIndex * 100 + (diff / categoryTrack.offsetWidth) * 100;
-                categoryTrack.style.transform = `translateX(${offset}%)`;
+        function buildWhatsAppText() {
+            let categoryText;
+            let termValue;
+            if (category === 1) {
+                categoryText = 'Телефоны';
+                categoryText += phoneMode === 'minDown' ? ' (Минимальный взнос)' : ' (Минимальная наценка)';
+                termValue = lastTerm;
+            } else if (category === 2) {
+                categoryText = 'Другие товары';
+                termValue = lastTerm;
+            } else if (category === 3) {
+                categoryText = 'Автомобили';
+                termValue = carTerm;
             }
+            return `Здравствуйте!
+Интересует рассрочка:
+
+Категория товара: ${categoryText}
+Стоимость товара: ${bank(lastResult.price)}
+
+Взнос: ${bank(lastResult.down)}
+Остаток: ${bank(lastResult.rest)}
+Ежемесячный платёж: ${bank(lastResult.monthly)}
+Общая сумма: ${bank(lastResult.total)}`.trim();
+        }
+
+        /* Theme */
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            feedback(themeToggle, 'toggle');
+            const theme = html.getAttribute('data-theme');
+            const newTheme = theme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
         });
 
-        categoryTrack.addEventListener('touchend', (e) => {
-            const diff = currentX - startX;
-            const threshold = 50;
+        /* Sound */
+        const soundToggle = document.getElementById('soundToggle');
+        if (!soundEnabled) soundToggle.classList.add('muted');
 
-            if (isDragging && dragDistance > threshold) {
-                e.preventDefault();
-                
-                if (diff > threshold && currentCategoryIndex > 0) {
-                    currentCategoryIndex--;
-                    handleCategoryChange();
-                } else if (diff < -threshold && currentCategoryIndex < 2) {
-                    currentCategoryIndex++;
-                    handleCategoryChange();
-                }
+        soundToggle.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            localStorage.setItem('soundEnabled', soundEnabled);
+            if (soundEnabled) {
+                soundToggle.classList.remove('muted');
+                playSound('toggle');
+            } else {
+                soundToggle.classList.add('muted');
             }
-
-            categoryTrack.classList.remove('dragging');
-            updateCategoryCarousel(true);
-            
-            setTimeout(() => {
-                isDragging = false;
-                dragDistance = 0;
-            }, 50);
+            visualHaptic(soundToggle);
         });
 
-        // Mouse events (for desktop)
-        categoryTrack.addEventListener('mousedown', (e) => {
-            startX = e.clientX;
-            currentX = startX;
-            isDragging = false;
-            dragDistance = 0;
-            categoryTrack.classList.add('dragging');
-            categoryTrack.style.cursor = 'grabbing';
-        });
-
-        categoryTrack.addEventListener('mousemove', (e) => {
-            if (e.buttons !== 1) return;
-            isDragging = true;
-            currentX = e.clientX;
-            dragDistance = Math.abs(currentX - startX);
-            
-            if (dragDistance > 5) {
-                const diff = currentX - startX;
-                const offset = -currentCategoryIndex * 100 + (diff / categoryTrack.offsetWidth) * 100;
-                categoryTrack.style.transform = `translateX(${offset}%)`;
-            }
-        });
-
-        categoryTrack.addEventListener('mouseup', (e) => {
-            categoryTrack.style.cursor = 'pointer';
-            
-            const diff = currentX - startX;
-            const threshold = 50;
-
-            if (isDragging && dragDistance > threshold) {
-                if (diff > threshold && currentCategoryIndex > 0) {
-                    currentCategoryIndex--;
-                    handleCategoryChange();
-                } else if (diff < -threshold && currentCategoryIndex < 2) {
-                    currentCategoryIndex++;
-                    handleCategoryChange();
-                }
-            }
-
-            categoryTrack.classList.remove('dragging');
-            updateCategoryCarousel(true);
-            
-            setTimeout(() => {
-                isDragging = false;
-                dragDistance = 0;
-            }, 50);
-        });
-
-        categoryTrack.addEventListener('mouseleave', () => {
-            if (isDragging || dragDistance > 0) {
-                isDragging = false;
-                categoryTrack.style.cursor = 'pointer';
-                categoryTrack.classList.remove('dragging');
-                updateCategoryCarousel(true);
-                
-                setTimeout(() => {
-                    dragDistance = 0;
-                }, 50);
-            }
-        });
-
-        // Click on indicators
-        document.querySelectorAll('.category-indicator').forEach((indicator, index) => {
-            indicator.addEventListener('click', () => {
-                currentCategoryIndex = index;
-                handleCategoryChange();
-                updateCategoryCarousel(true);
-            });
-        });
-
-        // Click on slides - single click to switch category
-        document.querySelectorAll('.category-slide').forEach((slide, index) => {
-            slide.addEventListener('click', (e) => {
-                // If clicking on active category, cycle to next
-                if (currentCategoryIndex === index) {
-                    e.preventDefault();
-                    
-                    if (currentCategoryIndex < 2) {
-                        currentCategoryIndex++;
-                    } else {
-                        currentCategoryIndex = 0;
-                    }
-                    
-                    handleCategoryChange();
-                    updateCategoryCarousel(true);
-                    return;
-                }
-                
-                // Otherwise switch to clicked category
-                currentCategoryIndex = index;
-                handleCategoryChange();
-                updateCategoryCarousel(true);
-            });
-        });
-
-        /* Update range labels */
+        /* Range labels */
         function updateRangeLabels() {
             const rangeLabels = document.getElementById('rangeLabels');
             const termSection = document.getElementById('termSection');
             const carTermSelection = document.getElementById('carTermSelection');
 
             if (category === 1) {
-                // Телефоны - показываем ползунок
                 termSection.classList.remove('hidden');
                 carTermSelection.classList.add('hidden');
-                
                 termInput.min = 4;
                 termInput.max = 12;
-                rangeLabels.innerHTML = `
-                    <span>4</span>
-                    <span>6</span>
-                    <span>8</span>
-                    <span>10</span>
-                    <span>12</span>
-                `;
+                rangeLabels.innerHTML = '<span>4</span><span>6</span><span>8</span><span>10</span><span>12</span>';
                 if (lastTerm < 4) lastTerm = 4;
                 if (lastTerm > 12) lastTerm = 12;
-                
                 termInput.value = lastTerm;
                 updateSlider();
             } else if (category === 3) {
-                // Автомобили - показываем кнопки выбора
                 termSection.classList.add('hidden');
                 carTermSelection.classList.remove('hidden');
             } else {
-                // Другие товары - показываем ползунок
                 termSection.classList.remove('hidden');
                 carTermSelection.classList.add('hidden');
-                
                 termInput.min = 3;
                 termInput.max = 13;
-                rangeLabels.innerHTML = `
-                    <span>3</span>
-                    <span>5</span>
-                    <span>8</span>
-                    <span>11</span>
-                    <span>13</span>
-                `;
-                
+                rangeLabels.innerHTML = '<span>3</span><span>5</span><span>8</span><span>11</span><span>13</span>';
                 termInput.value = lastTerm;
                 updateSlider();
             }
@@ -1999,17 +1357,14 @@
                     const value = parseInt(label.textContent);
                     termInput.value = value;
                     lastTerm = value;
-                    
                     if (category === 1) {
                         const wasSpecial = (oldTerm === 4 || oldTerm === 5);
                         const isSpecial = (lastTerm === 4 || lastTerm === 5);
-                        
                         if (wasSpecial !== isSpecial) {
                             userTouchedDown = false;
                             localStorage.setItem('userTouchedDown', 'false');
                         }
                     }
-                    
                     localStorage.setItem('lastTerm', lastTerm);
                     updateSlider();
                     updatePhoneModesVisibility();
@@ -2018,15 +1373,13 @@
                 });
             });
         }
-        
-        /* Функция для показа/скрытия кнопок режимов телефонов */
+
         function updatePhoneModesVisibility() {
             const modes = document.getElementById('phoneModes');
             const minMarkupBtn = document.querySelector('.phone-mode[data-mode="minMarkup"]');
-            
+
             if (category === 1) {
                 modes.classList.remove('hidden');
-                
                 if (lastTerm === 4 || lastTerm === 5) {
                     minMarkupBtn.classList.add('hide-mode');
                     modes.classList.add('full-width');
@@ -2034,9 +1387,7 @@
                     localStorage.setItem('phoneMode', phoneMode);
                     document.querySelectorAll('.phone-mode').forEach(btn => {
                         btn.classList.remove('active');
-                        if (btn.dataset.mode === 'minDown') {
-                            btn.classList.add('active');
-                        }
+                        if (btn.dataset.mode === 'minDown') btn.classList.add('active');
                     });
                 } else {
                     minMarkupBtn.classList.remove('hide-mode');
@@ -2050,14 +1401,12 @@
         /* CALC */
         function calc() {
             let price = Number(digits(priceInput.value));
-
             if (price < MIN_PRICE) {
                 price = MIN_PRICE;
                 priceInput.value = bank(MIN_PRICE);
             }
 
             let downRaw = Number(digits(downInput.value)) || 0;
-
             if (downRaw > price) {
                 downRaw = price;
                 downInput.value = bank(price);
@@ -2065,22 +1414,18 @@
             }
 
             let term, N;
-            
             if (category === 3) {
-                // Для автомобилей используем carTerm
                 term = carTerm;
-                N = term - 1;
+                N = term;
             } else {
                 term = lastTerm;
                 N = term - 1;
             }
-            
-            let down = downRaw;
 
+            let down = downRaw;
             let p, r;
 
             if (category === 1) {
-                // Телефоны
                 if (term === 4 || term === 5) {
                     p = phonePrice;
                     r = phoneRest;
@@ -2094,7 +1439,6 @@
                     }
                 }
             } else if (category === 2) {
-                // Другие товары
                 if (price < 150000) {
                     p = allPrice;
                     r = allRest;
@@ -2103,7 +1447,6 @@
                     r = allRest150t;
                 }
             } else if (category === 3) {
-                // Автомобили - разные наценки в зависимости от стоимости
                 if (price < 1000000) {
                     p = carPriceLow;
                     r = carRestLow;
@@ -2114,7 +1457,6 @@
             }
 
             const fee = category === 1 ? 1000 : 0;
-
             let minDown;
 
             if (category === 1) {
@@ -2124,17 +1466,21 @@
                     minDown = Math.ceil((price * 0.3) / 100) * 100;
                 }
             } else if (category === 3) {
-                // Для автомобилей минимальный взнос 25% от итоговой суммы с наценкой
                 const totalWithMarkup = price * (p[term] + 1);
                 minDown = Math.ceil((totalWithMarkup * 0.25) / 100) * 100;
             } else {
-                // Для других товаров
                 minDown = Math.ceil((price * 0.25) / 100) * 100;
             }
 
             minDownText.innerText = 'Минимум: ' + bank(minDown);
 
-            if (!userTouchedDown) {
+            if (price <= downRaw) {
+                down = minDown;
+                downInput.value = bank(minDown);
+                localStorage.setItem('down', minDown);
+                userTouchedDown = false;
+                localStorage.setItem('userTouchedDown', 'false');
+            } else if (!userTouchedDown) {
                 down = minDown;
                 downInput.value = bank(minDown);
                 localStorage.setItem('down', minDown);
@@ -2170,209 +1516,54 @@
             }
 
             termLabel.innerText = term + ' ' + paymentWord(term);
-            downValue.innerText = bank(down);
+            downValue.innerText = bank(lastResult.down);
             restValue.innerText = bank(total - down);
             monthlyValue.innerText = bank(monthly);
             totalValue.innerText = bank(total);
             paymentsCount.innerText = N;
+            paymentsWord.innerText = paymentWord(N);
+
+            // Animate values
+            bumpValue('monthlyValue');
         }
 
-        function buildWhatsAppText() {
-            let categoryText;
-            let termValue;
-            
-            if (category === 1) {
-                categoryText = 'Телефоны';
-                categoryText += phoneMode === 'minDown'
-                    ? ' (Минимальный взнос)'
-                    : ' (Минимальная наценка)';
-                termValue = lastTerm;
-            } else if (category === 2) {
-                categoryText = 'Другие товары';
-                termValue = lastTerm;
-            } else if (category === 3) {
-                categoryText = 'Автомобили';
-                termValue = carTerm;
-            }
-
-            return `Здравствуйте!
-Интересует рассрочка:
-
-Категория товара: ${categoryText}
-Стоимость товара: ${bank(lastResult.price)}
-Платежей: ${termValue}
-
-Взнос: ${bank(lastResult.down)}
-Остаток: ${bank(lastResult.rest)}
-Ежемесячный платёж: ${bank(lastResult.monthly)}
-Общая сумма: ${bank(lastResult.total)}`.trim();
-        }
-
-        /* click min down */
-        minDownDiv.addEventListener('click', () => {
-            feedback(minDownDiv);
-            const v = digits(minDownText.innerText);
-            if (!v) return;
-            userTouchedDown = true;
-            localStorage.setItem('userTouchedDown', 'true');
-            const minDownValue = Number(v);
-            downInput.value = bank(minDownValue);
-            localStorage.setItem('down', minDownValue);
-            downInput.focus();
-            downInput.blur();
-            calc();
-        });
-
-        /* SLIDER */
-        function updateSlider() {
-            const min = +termInput.min;
-            const max = +termInput.max;
-            const val = +termInput.value;
-            const percent = (val - min) / (max - min);
-
-            termInput.style.background = `linear-gradient(to right, var(--primary) 0%, var(--primary) ${percent * 100}%, var(--border) ${percent * 100}%, var(--border) 100%)`;
-        }
-
-        termInput.addEventListener('input', () => {
-            const oldTerm = lastTerm;
-            lastTerm = +termInput.value;
-            
-            if (category === 1) {
-                const wasSpecial = (oldTerm === 4 || oldTerm === 5);
-                const isSpecial = (lastTerm === 4 || lastTerm === 5);
-                
-                if (wasSpecial !== isSpecial) {
-                    userTouchedDown = false;
-                    localStorage.setItem('userTouchedDown', 'false');
-                }
-            }
-            
-            localStorage.setItem('lastTerm', lastTerm);
-            updateSlider();
-            updatePhoneModesVisibility();
-            calc();
-            playSliderSound(lastTerm);
-        });
-
-        document.querySelectorAll('.phone-mode').forEach(btn => {
-            btn.addEventListener('click', () => {
-                feedback(btn);
-                document.querySelectorAll('.phone-mode').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                phoneMode = btn.dataset.mode;
-                userTouchedDown = false;
-                
-                localStorage.setItem('phoneMode', phoneMode);
-                localStorage.setItem('userTouchedDown', 'false');
-                
-                calc();
-            });
-        });
-
-        /* Car term selection */
-        document.querySelectorAll('.car-term-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                feedback(btn);
-                document.querySelectorAll('.car-term-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                carTerm = parseInt(btn.dataset.term);
-                userTouchedDown = false;
-                
-                localStorage.setItem('carTerm', carTerm);
-                localStorage.setItem('userTouchedDown', 'false');
-                
-                calc();
-            });
-        });
-
-        /* WhatsApp Button */
-        const waBtn = document.getElementById('waBtn');
-
-        if (waBtn) {
-            waBtn.addEventListener('click', e => {
-                feedback(waBtn, 'success');
-                const text = buildWhatsAppText();
-                const encoded = encodeURIComponent(text);
-                waBtn.href = `https://wa.me/79298533232?text=${encoded}`;
-            });
-        }
-
-        /* Theme Toggle */
-        const themeToggle = document.getElementById('themeToggle');
-
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        html.setAttribute('data-theme', currentTheme);
-
-        themeToggle.addEventListener('click', () => {
-            feedback(themeToggle, 'toggle');
-            const theme = html.getAttribute('data-theme');
-            const newTheme = theme === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateCategoryIcons();
-        });
-
-        /* Sound Toggle */
-        const soundToggle = document.getElementById('soundToggle');
-
-        if (!soundEnabled) {
-            soundToggle.classList.add('muted');
-        }
-
-        soundToggle.addEventListener('click', () => {
-            soundEnabled = !soundEnabled;
-            localStorage.setItem('soundEnabled', soundEnabled);
-
-            if (soundEnabled) {
-                soundToggle.classList.remove('muted');
-                playSound('toggle');
-            } else {
-                soundToggle.classList.add('muted');
-            }
-
-            visualHaptic(soundToggle);
-        });
-
-        /* init */
+        /* INIT */
         const savedPrice = localStorage.getItem('price');
         const savedDown = localStorage.getItem('down');
-        
+
         if (savedPrice) {
             priceInput.value = bank(Number(savedPrice));
         } else {
             priceInput.value = bank(75000);
         }
-        
-        // Устанавливаем активный режим телефонов
+
+        // Set active phone mode
         document.querySelectorAll('.phone-mode').forEach(btn => {
             btn.classList.remove('active');
-            if (btn.dataset.mode === phoneMode) {
-                btn.classList.add('active');
-            }
+            if (btn.dataset.mode === phoneMode) btn.classList.add('active');
         });
-        
-        // Устанавливаем активный срок для автомобилей
+
+        // Set active car term
         document.querySelectorAll('.car-term-btn').forEach(btn => {
             btn.classList.remove('active');
-            if (parseInt(btn.dataset.term) === carTerm) {
-                btn.classList.add('active');
-            }
+            if (parseInt(btn.dataset.term) === carTerm) btn.classList.add('active');
         });
-        
-        // Initialize carousel position using mapping
-        currentCategoryIndex = catToIndex[category] || 2;
-        updateCategoryCarousel(false);
-        
+
+        // Set active category tab
+        document.querySelectorAll('.cat-tab').forEach(tab => {
+            tab.classList.remove('active');
+            if (parseInt(tab.dataset.cat) === category) tab.classList.add('active');
+        });
+
+        // Restore down payment
+        if (savedDown && userTouchedDown) {
+            downInput.value = bank(Number(savedDown));
+        }
+
         updateRangeLabels();
         updateSlider();
         updatePhoneModesVisibility();
         calc();
-        
-        if (savedDown && userTouchedDown) {
-            downInput.value = bank(Number(savedDown));
-        }
-        
-        updateCategoryIcons();
     </script>
 </body>
 
